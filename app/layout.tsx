@@ -19,15 +19,59 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://mlya.me";
+const title = "ASSOH APONG MARLEY WALTER | Fullstack Developer";
+const description =
+  "Portfolio of ASSOH APONG MARLEY WALTER — Fullstack JavaScript/TypeScript Developer with 4+ years of experience building modern web & mobile applications.";
+
 export const metadata: Metadata = {
-  title: "ASSOH APONG MARLEY WALTER | Fullstack Developer",
-  description:
-    "Portfolio of ASSOH APONG MARLEY WALTER — Fullstack JavaScript/TypeScript Developer with 4+ years of experience.",
+  title,
+  description,
+  metadataBase: new URL(siteUrl),
   manifest: "/manifest.json",
+  keywords: [
+    "Fullstack Developer",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Portfolio",
+    "ASSOH APONG MARLEY WALTER",
+  ],
+  authors: [{ name: "ASSOH APONG MARLEY WALTER", url: siteUrl }],
+  creator: "ASSOH APONG MARLEY WALTER",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    alternateLocale: "en_US",
+    url: siteUrl,
+    title,
+    description,
+    siteName: "MLYA Portfolio",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ASSOH APONG MARLEY WALTER - Fullstack Developer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/images/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "AM Portfolio",
+    title: "MLYA Portfolio",
   },
 };
 

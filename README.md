@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio - ASSOH APONG MARLEY WALTER
+
+Personal portfolio website built with Next.js, showcasing my work as a Fullstack JavaScript/TypeScript Developer.
+
+## Tech Stack
+
+- **Next.js 16** - React framework with App Router
+- **TypeScript** - Type safety
+- **Tailwind CSS v4** - Styling
+- **GSAP** - Advanced scroll-triggered animations
+- **Framer Motion** - Component animations
+- **Lenis** - Smooth scroll
+- **Lucide React** - Icons
+
+## Features
+
+- Cinematic preloader with counter animation
+- Custom magnetic cursor
+- Smooth scroll with Lenis
+- GSAP scroll-triggered animations (parallax, text reveal, horizontal scroll)
+- Bento grid layout for About section
+- Horizontal timeline for Experience section
+- Pinterest-style masonry grid for Projects (fetched from GitHub API)
+- Word-by-word quote reveal on scroll
+- Marquee tech stack bands
+- Internationalization (FR/EN) with custom i18n system
+- Grain/noise texture overlay
+- Responsive design
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Run production build |
+| `npm run lint` | Run ESLint |
+| `npm run release:dev` | Dev pre-release (standard-version) |
+| `npm run release:prod` | Production release (standard-version) |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  components/       # All UI components
+    about.tsx        # Bento grid about section
+    contact.tsx      # Contact form + social links
+    custom-cursor.tsx
+    experience.tsx   # Horizontal scroll timeline
+    footer.tsx
+    hero.tsx         # Main hero with GSAP animations
+    marquee.tsx      # Infinite scrolling tech band
+    navbar.tsx       # Hide/show navbar + language switcher
+    preloader.tsx    # Loading screen with counter
+    projects.tsx     # GitHub repos masonry grid
+    quote.tsx        # Animated quote reveal
+    smooth-scroll.tsx
+  i18n/             # Internationalization
+    locales/
+      fr.ts          # French translations
+      en.ts          # English translations
+      index.ts
+    index.tsx        # I18nProvider + useTranslation hook
+  globals.css       # Theme variables, noise texture, marquee animation
+  layout.tsx        # Root layout with fonts
+  page.tsx          # Main page assembly
+public/
+  images/           # Portrait photos
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**ASSOH APONG MARLEY WALTER**
+- Email: marlexapong90@gmail.com
+- GitHub: [@MarleyApong](https://github.com/MarleyApong)
+- LinkedIn: [Marley Apong](https://linkedin.com/in/marley-apong)
+- YouTube: [@amatutoriel](https://youtube.com/@amatutoriel)

@@ -3,19 +3,21 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "../i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Quote() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const wordsRef = useRef<HTMLSpanElement[]>([]);
 
-  const quote = "Do it once, do it right, do it with TypeScript.";
+  const quote = t("quote.text");
   const words = quote.split(" ");
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      wordsRef.current.forEach((word, i) => {
+      wordsRef.current.forEach((word) => {
         gsap.fromTo(
           word,
           { opacity: 0.1, y: 20 },
@@ -29,7 +31,6 @@ export default function Quote() {
               end: "top 60%",
               scrub: 1,
             },
-            delay: i * 0.02,
           }
         );
       });
@@ -43,7 +44,6 @@ export default function Quote() {
       ref={sectionRef}
       className="relative flex min-h-[60vh] items-center justify-center overflow-hidden px-6 py-28 md:px-12"
     >
-      {/* Decorative quotes */}
       <span className="pointer-events-none absolute left-6 top-20 font-display text-[12rem] leading-none text-accent/5 select-none md:left-16 md:text-[20rem]">
         &ldquo;
       </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { I18nProvider } from "./i18n";
 import SmoothScroll from "./components/smooth-scroll";
 import Preloader from "./components/preloader";
 import CustomCursor from "./components/custom-cursor";
@@ -18,7 +19,7 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <>
+    <I18nProvider>
       {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
       <CustomCursor />
       <SmoothScroll>
@@ -40,6 +41,6 @@ export default function Home() {
           <Footer />
         </main>
       </SmoothScroll>
-    </>
+    </I18nProvider>
   );
 }

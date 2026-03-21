@@ -2,22 +2,28 @@
 
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { Menu, X, ArrowUpRight } from "lucide-react";
-
-const links = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
-];
+import { Menu, X, ArrowUpRight, Languages } from "lucide-react";
+import {
+  useTranslation,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "../i18n";
 
 export default function Navbar() {
+  const { t, lang, changeLang } = useTranslation();
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const lastScrollY = useRef(0);
-  const navRef = useRef<HTMLElement>(null);
   const menuItemsRef = useRef<HTMLAnchorElement[]>([]);
+
+  const links = [
+    { label: t("nav.home"), href: "#home" },
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.experience"), href: "#experience" },
+    { label: t("nav.projects"), href: "#projects" },
+    { label: t("nav.contact"), href: "#contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => {
@@ -29,7 +35,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Mobile menu animation
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
@@ -53,7 +58,6 @@ export default function Navbar() {
   return (
     <>
       <nav
-        ref={navRef}
         className="fixed left-0 right-0 top-0 z-50 px-6 py-5 transition-all duration-500 md:px-12"
         style={{
           transform: visible ? "translateY(0)" : "translateY(-100%)",
@@ -73,7 +77,7 @@ export default function Navbar() {
           <div className="hidden items-center gap-10 md:flex">
             {links.map((link) => (
               <a
-                key={link.label}
+                key={link.href}
                 href={link.href}
                 className="group relative font-display text-xs tracking-[0.2em] text-muted transition-colors hover:text-foreground"
               >
@@ -83,14 +87,47 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
-          <a
-            href="#contact"
-            className="hidden items-center gap-1 rounded-full border border-accent/30 px-5 py-2 font-display text-xs tracking-widest text-accent transition-all hover:bg-accent hover:text-black md:flex"
-          >
-            CONTACT
-            <ArrowUpRight className="h-3 w-3" />
-          </a>
+          <div className="hidden items-center gap-4 md:flex">
+            {/* Language switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1.5 rounded-full border border-card-border px-3 py-1.5 font-display text-xs tracking-widest text-muted transition-all hover:border-accent/50 hover:text-accent"
+              >
+                <Languages className="h-3 w-3" />
+                {lang.toUpperCase()}
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-10 overflow-hidden rounded-xl border border-card-border bg-card-bg shadow-xl">
+                  {(
+                    Object.keys(supportedLanguages) as SupportedLanguage[]
+                  ).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        changeLang(key);
+                        setLangOpen(false);
+                      }}
+                      className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-xs transition-colors hover:bg-foreground/5 ${
+                        lang === key ? "text-accent" : "text-muted"
+                      }`}
+                    >
+                      {supportedLanguages[key].name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* CTA */}
+            <a
+              href="#contact"
+              className="flex items-center gap-1 rounded-full border border-accent/30 px-5 py-2 font-display text-xs tracking-widest text-accent transition-all hover:bg-accent hover:text-black"
+            >
+              {t("nav.contact").toUpperCase()}
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          </div>
 
           {/* Mobile toggle */}
           <button
@@ -111,7 +148,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-2 bg-[#050505]">
           {links.map((link, i) => (
             <a
-              key={link.label}
+              key={link.href}
               ref={(el) => {
                 if (el) menuItemsRef.current[i] = el;
               }}
@@ -127,6 +164,27 @@ export default function Navbar() {
               </span>
             </a>
           ))}
+          {/* Mobile lang switcher */}
+          <div className="mt-6 flex gap-3">
+            {(Object.keys(supportedLanguages) as SupportedLanguage[]).map(
+              (key) => (
+                <button
+                  key={key}
+                  onClick={() => {
+                    changeLang(key);
+                    setMobileOpen(false);
+                  }}
+                  className={`rounded-full border px-4 py-2 font-display text-sm tracking-widest transition-all ${
+                    lang === key
+                      ? "border-accent bg-accent text-black"
+                      : "border-card-border text-muted"
+                  }`}
+                >
+                  {supportedLanguages[key].label}
+                </button>
+              )
+            )}
+          </div>
         </div>
       )}
     </>

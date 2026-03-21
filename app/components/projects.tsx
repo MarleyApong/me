@@ -12,6 +12,7 @@ import {
   Filter,
   Calendar,
 } from "lucide-react";
+import { useTranslation } from "../i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,6 +67,7 @@ export default function Projects() {
   const [visibleCount, setVisibleCount] = useState(PER_PAGE);
   const [languages, setLanguages] = useState<string[]>([]);
   const [hoveredLang, setHoveredLang] = useState<string | null>(null);
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -197,11 +199,11 @@ export default function Projects() {
           </span>
           <div className="h-px w-12 bg-accent/30" />
           <h2 className="font-display text-6xl tracking-tight md:text-8xl">
-            PROJECTS<span className="text-accent">.</span>
+            {t("projects.title")}<span className="text-accent">.</span>
           </h2>
         </div>
 
-        <p className="mb-8 text-muted">{repos.length} repositories on GitHub</p>
+        <p className="mb-8 text-muted">{repos.length} {t("projects.repos")}</p>
 
         {/* Search & Filter */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row">
@@ -211,7 +213,7 @@ export default function Projects() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher un projet..."
+              placeholder={t("projects.search")}
               className="w-full rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-4 text-sm text-foreground outline-none transition-colors focus:border-accent"
             />
           </div>
@@ -222,7 +224,7 @@ export default function Projects() {
               onChange={(e) => setLangFilter(e.target.value)}
               className="appearance-none rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-10 text-sm text-foreground outline-none transition-colors focus:border-accent"
             >
-              <option value="All">Tous ({repos.length})</option>
+              <option value="All">{t("projects.allLangs")} ({repos.length})</option>
               {languages.map((lang) => (
                 <option key={lang} value={lang}>
                   {lang} ({langCounts[lang] || 0})
@@ -242,7 +244,7 @@ export default function Projects() {
                 : "border border-card-border text-muted hover:border-accent/50 hover:text-accent"
             }`}
           >
-            All
+            {t("projects.allLangs")}
           </button>
           {languages.slice(0, 8).map((lang) => (
             <button
@@ -358,7 +360,7 @@ export default function Projects() {
                           </p>
                         ) : (
                           <p className="mb-4 text-sm italic text-muted/40">
-                            No description provided.
+                            {t("projects.noDesc")}
                           </p>
                         )}
 
@@ -393,7 +395,7 @@ export default function Projects() {
                             className="flex items-center gap-1.5 rounded-xl border border-card-border px-3 py-1.5 text-xs font-medium text-muted transition-all hover:border-accent hover:text-accent"
                           >
                             <Github className="h-3.5 w-3.5" />
-                            Code
+                            {t("projects.code")}
                           </a>
                           {repo.homepage && (
                             <a
@@ -403,7 +405,7 @@ export default function Projects() {
                               className="flex items-center gap-1.5 rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-black transition-all hover:bg-accent-dark"
                             >
                               <ExternalLink className="h-3.5 w-3.5" />
-                              Demo
+                              {t("projects.demo")}
                             </a>
                           )}
                         </div>
@@ -421,14 +423,14 @@ export default function Projects() {
                   onClick={() => setVisibleCount((v) => v + PER_PAGE)}
                   className="rounded-full border border-accent/30 px-8 py-3 font-display text-sm tracking-widest text-accent transition-all hover:bg-accent hover:text-black"
                 >
-                  VOIR PLUS ({filtered.length - visibleCount} restants)
+                  {t("projects.seeMore")} ({filtered.length - visibleCount} {t("projects.remaining")})
                 </button>
               </div>
             )}
 
             {filtered.length === 0 && (
               <p className="py-20 text-center text-muted">
-                Aucun projet trouvé.
+                {t("projects.noResults")}
               </p>
             )}
           </>

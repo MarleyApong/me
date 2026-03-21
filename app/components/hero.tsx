@@ -5,10 +5,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
+import { useTranslation } from "../i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
@@ -20,7 +22,6 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 2.8 });
 
-      // Name reveal - letter by letter
       if (nameRef.current) {
         const chars = nameRef.current.querySelectorAll(".char");
         tl.fromTo(
@@ -37,7 +38,6 @@ export default function Hero() {
         );
       }
 
-      // Subtitle
       tl.fromTo(
         subtitleRef.current,
         { y: 30, opacity: 0 },
@@ -45,7 +45,6 @@ export default function Hero() {
         "-=0.3"
       );
 
-      // Photo
       tl.fromTo(
         photoRef.current,
         { scale: 0.8, opacity: 0, rotate: 8 },
@@ -53,20 +52,13 @@ export default function Hero() {
         "-=0.5"
       );
 
-      // Lines
       tl.fromTo(
         lineRefs.current,
         { scaleX: 0 },
-        {
-          scaleX: 1,
-          stagger: 0.1,
-          duration: 0.6,
-          ease: "power2.out",
-        },
+        { scaleX: 1, stagger: 0.1, duration: 0.6, ease: "power2.out" },
         "-=0.5"
       );
 
-      // Scroll indicator
       tl.fromTo(
         scrollRef.current,
         { opacity: 0 },
@@ -74,7 +66,6 @@ export default function Hero() {
         "-=0.2"
       );
 
-      // Parallax on scroll
       if (sectionRef.current) {
         gsap.to(nameRef.current, {
           yPercent: -30,
@@ -110,15 +101,12 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen items-center overflow-hidden px-6 py-20 md:px-12"
     >
-      {/* Large background number */}
       <div className="pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 font-display text-[20rem] leading-none text-foreground/[0.02] select-none md:left-12 md:text-[30rem]">
         01
       </div>
 
       <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center gap-16 lg:flex-row lg:items-center lg:justify-between">
-        {/* Left */}
         <div className="z-10 flex flex-col items-center lg:items-start">
-          {/* Name with char split */}
           <h1
             ref={nameRef}
             className="overflow-hidden font-display text-7xl leading-[0.85] tracking-tight sm:text-8xl md:text-[10rem]"
@@ -127,10 +115,7 @@ export default function Hero() {
             {chars.map((char, i) => (
               <span
                 key={i}
-                className={`char inline-block ${
-                  i >= 7 ? "text-accent" : ""
-                }`}
-                style={{ display: "inline-block" }}
+                className={`char inline-block ${i >= 7 ? "text-accent" : ""}`}
               >
                 {char}
               </span>
@@ -138,7 +123,6 @@ export default function Hero() {
             <span className="char inline-block text-accent">.</span>
           </h1>
 
-          {/* Subtitle */}
           <div ref={subtitleRef} className="mt-6 flex flex-col gap-2 opacity-0">
             <div className="flex items-center gap-3">
               <div
@@ -148,38 +132,33 @@ export default function Hero() {
                 className="h-[1px] w-12 origin-left bg-accent"
               />
               <span className="font-hand text-2xl text-accent sm:text-3xl">
-                Creative Visual
+                {t("hero.subtitle")}
               </span>
             </div>
             <p className="max-w-md text-lg text-muted lg:text-left">
               ASSOH APONG MARLEY WALTER
             </p>
-            <p className="text-sm text-muted/60">
-              Fullstack JavaScript / TypeScript Developer
-            </p>
+            <p className="text-sm text-muted/60">{t("hero.role")}</p>
           </div>
 
-          {/* CTA */}
           <div className="mt-10 flex gap-4">
             <a
               href="#projects"
               className="group flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-display text-sm tracking-widest text-black transition-transform hover:scale-105"
             >
-              VOIR MES PROJETS
+              {t("hero.cta")}
               <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </a>
             <a
               href="#contact"
               className="flex items-center rounded-full border border-foreground/20 px-7 py-3.5 font-display text-sm tracking-widest text-foreground transition-all hover:border-accent hover:text-accent"
             >
-              CONTACT
+              {t("hero.contact")}
             </a>
           </div>
         </div>
 
-        {/* Right - Photo */}
         <div ref={photoRef} className="relative opacity-0">
-          {/* Accent block behind */}
           <div className="absolute -right-5 -top-5 h-full w-full rounded-3xl bg-accent/20" />
           <div className="absolute -right-2 -top-2 h-full w-full rounded-3xl bg-accent/10" />
 
@@ -191,42 +170,37 @@ export default function Hero() {
               className="object-cover"
               priority
             />
-            {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
           </div>
 
-          {/* Floating badge */}
           <div className="absolute -left-6 bottom-8 rounded-2xl border border-card-border bg-card-bg/90 px-5 py-3 backdrop-blur-sm">
             <p className="font-display text-3xl text-accent">4+</p>
-            <p className="text-xs text-muted">Years of experience</p>
+            <p className="text-xs text-muted">{t("hero.years")}</p>
           </div>
 
-          {/* Status dot */}
           <div className="absolute -right-3 top-8 flex items-center gap-2 rounded-full border border-card-border bg-card-bg/90 px-4 py-2 backdrop-blur-sm">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
             </span>
-            <span className="text-xs text-muted">Available</span>
+            <span className="text-xs text-muted">{t("hero.available")}</span>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div
         ref={scrollRef}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="font-display text-[10px] tracking-[0.3em] text-muted">
-            SCROLL
+            {t("hero.scroll")}
           </span>
           <div className="h-12 w-[1px] bg-gradient-to-b from-accent to-transparent" />
         </div>
       </div>
 
-      {/* Vertical text */}
-      <div className="absolute right-6 top-1/2 hidden -translate-y-1/2 -rotate-90 font-display text-[10px] tracking-[0.4em] text-muted/40 lg:block md:right-12">
+      <div className="absolute right-6 top-1/2 hidden -translate-y-1/2 -rotate-90 font-display text-[10px] tracking-[0.4em] text-muted/40 md:right-12 lg:block">
         APONG MARLEY &mdash; 2025
       </div>
     </section>

@@ -15,6 +15,7 @@ import {
   Layers,
   Zap,
 } from "lucide-react";
+import { useTranslation } from "../i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,6 +53,7 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 }
 
 export default function About() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
@@ -90,29 +92,26 @@ export default function About() {
       id="about"
       className="relative overflow-hidden px-6 py-28 md:px-12"
     >
-      {/* Background number */}
       <div className="pointer-events-none absolute right-6 top-20 font-display text-[15rem] leading-none text-foreground/[0.02] select-none md:text-[25rem]">
         02
       </div>
 
       <div className="mx-auto max-w-7xl">
-        {/* Section title */}
         <div className="mb-16 flex items-end gap-4">
           <span className="font-display text-sm tracking-[0.3em] text-accent">
             02
           </span>
           <div className="h-[1px] w-12 bg-accent/30" />
           <h2 className="font-display text-6xl tracking-tight md:text-8xl">
-            ABOUT<span className="text-accent">.</span>
+            {t("about.title")}<span className="text-accent">.</span>
           </h2>
         </div>
 
-        {/* Bento Grid */}
         <div
           ref={cardsRef}
           className="grid auto-rows-[minmax(140px,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {/* Photo card - spans 2 rows */}
+          {/* Photo card */}
           <div className="bento-card row-span-2 overflow-hidden rounded-3xl border border-card-border bg-card-bg">
             <div className="relative h-full min-h-[300px]">
               <Image
@@ -131,7 +130,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Bio card - spans 2 cols */}
+          {/* Bio card */}
           <div className="bento-card col-span-1 rounded-3xl border border-card-border bg-card-bg p-7 sm:col-span-2">
             <div className="mb-3 flex items-center gap-2">
               <Code2 className="h-4 w-4 text-accent" />
@@ -140,15 +139,12 @@ export default function About() {
               </span>
             </div>
             <p className="text-base leading-relaxed text-muted">
-              Developpeur Fullstack JavaScript / TypeScript avec plus de
-              <strong className="text-foreground"> 4 ans d&apos;experience</strong>.
-              Passionne et meticuleux, je construis des applications web et
-              mobile scalables avec une architecture propre. Du frontend au
-              backend, en passant par le DevOps et la data analytics, j&apos;evolue
-              en permanence.
+              {t("about.bio")}
+              <strong className="text-foreground"> {t("about.bioHighlight")}</strong>
+              {t("about.bioEnd")}
             </p>
             <p className="mt-3 font-hand text-lg text-accent">
-              &ldquo;Coding is not just my job — it&apos;s my lifestyle.&rdquo;
+              &ldquo;{t("about.bioQuote")}&rdquo;
             </p>
           </div>
 
@@ -157,7 +153,7 @@ export default function About() {
             <div className="mb-3 flex items-center gap-2">
               <Zap className="h-4 w-4 text-accent" />
               <span className="font-display text-xs tracking-[0.2em] text-accent">
-                STATS
+                {t("about.stats")}
               </span>
             </div>
             <div className="flex flex-col gap-4">
@@ -165,13 +161,13 @@ export default function About() {
                 <p className="font-display text-4xl text-foreground">
                   <AnimatedCounter target={4} suffix="+" />
                 </p>
-                <p className="text-xs text-muted">Ans d&apos;experience</p>
+                <p className="text-xs text-muted">{t("about.yearsExp")}</p>
               </div>
               <div>
                 <p className="font-display text-4xl text-foreground">
                   <AnimatedCounter target={50} suffix="+" />
                 </p>
-                <p className="text-xs text-muted">Projets GitHub</p>
+                <p className="text-xs text-muted">{t("about.githubProjects")}</p>
               </div>
             </div>
           </div>
@@ -181,21 +177,21 @@ export default function About() {
             <div className="mb-3 flex items-center gap-2">
               <GraduationCap className="h-4 w-4 text-accent" />
               <span className="font-display text-xs tracking-[0.2em] text-accent">
-                EDUCATION
+                {t("about.education")}
               </span>
             </div>
             <div className="space-y-3">
               <div className="border-l-2 border-accent/30 pl-3">
                 <p className="text-sm font-semibold text-foreground">
-                  Software Engineering
+                  {t("about.softwareEng")}
                 </p>
-                <p className="text-xs text-muted">BTS & Licence</p>
+                <p className="text-xs text-muted">{t("about.degree")}</p>
               </div>
               <div className="border-l-2 border-accent/30 pl-3">
                 <p className="text-sm font-semibold text-foreground">
-                  Self-taught Developer
+                  {t("about.selfTaught")}
                 </p>
-                <p className="text-xs text-muted">Real-world experience</p>
+                <p className="text-xs text-muted">{t("about.realWorld")}</p>
               </div>
             </div>
           </div>
@@ -205,20 +201,20 @@ export default function About() {
             <div className="mb-3 flex items-center gap-2">
               <Globe className="h-4 w-4 text-accent" />
               <span className="font-display text-xs tracking-[0.2em] text-accent">
-                LANGUES
+                {t("about.languages")}
               </span>
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-foreground">Francais</span>
-                <span className="text-xs text-muted">Natif</span>
+                <span className="text-sm text-foreground">{t("about.french")}</span>
+                <span className="text-xs text-muted">{t("about.native")}</span>
               </div>
               <div className="h-1 rounded-full bg-card-border">
                 <div className="h-1 w-full rounded-full bg-accent" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-foreground">English</span>
-                <span className="text-xs text-muted">Professional</span>
+                <span className="text-sm text-foreground">{t("about.english")}</span>
+                <span className="text-xs text-muted">{t("about.professional")}</span>
               </div>
               <div className="h-1 rounded-full bg-card-border">
                 <div className="h-1 w-[85%] rounded-full bg-accent" />
@@ -226,12 +222,12 @@ export default function About() {
             </div>
           </div>
 
-          {/* Skills - spans 2 cols */}
+          {/* Skills */}
           <div className="bento-card col-span-1 rounded-3xl border border-card-border bg-card-bg p-7 sm:col-span-2">
             <div className="mb-4 flex items-center gap-2">
               <Layers className="h-4 w-4 text-accent" />
               <span className="font-display text-xs tracking-[0.2em] text-accent">
-                TECH STACK
+                {t("about.techStack")}
               </span>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -251,7 +247,7 @@ export default function About() {
             <div className="mb-4 flex items-center gap-2">
               <Mail className="h-4 w-4 text-accent" />
               <span className="font-display text-xs tracking-[0.2em] text-accent">
-                CONTACT
+                {t("about.contactLabel")}
               </span>
             </div>
             <div className="flex flex-col gap-3">

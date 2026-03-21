@@ -31,12 +31,16 @@ export default function ThemePanel() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-card-border bg-card-bg shadow-lg transition-all hover:border-accent/50 hover:shadow-xl"
+        className={`flex h-11 w-11 items-center justify-center rounded-full border bg-card-bg shadow-lg transition-all hover:shadow-xl ${
+          open ? "border-accent" : "border-card-border hover:border-accent/50"
+        }`}
         style={{ cursor: "none" }}
       >
         <Settings
-          className="h-4 w-4 text-muted transition-transform"
-          style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
+          className={`h-4 w-4 transition-colors ${open ? "text-accent" : "text-muted"}`}
+          style={{
+            animation: open ? "spin 3s linear infinite" : "none",
+          }}
         />
       </button>
 

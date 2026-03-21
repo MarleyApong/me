@@ -99,6 +99,12 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+/* Slow spin */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Marquee */
 @keyframes marquee {
   0% {

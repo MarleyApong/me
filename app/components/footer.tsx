@@ -1,17 +1,25 @@
 "use client";
 
 import { Heart } from "lucide-react";
+import Image from "next/image";
 import { useTranslation } from "../i18n";
+import { useTheme } from "./theme-provider";
 
 export default function Footer() {
   const { t } = useTranslation();
+  const { mode } = useTheme();
 
   return (
     <footer className="border-t border-card-border bg-card-bg px-6 py-10 md:px-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
-        <p className="font-display text-xl tracking-[0.2em] text-foreground">
-          AM<span className="text-accent">.</span>
-        </p>
+        <a href="#home" className="relative h-8 w-24">
+          <Image
+            src={mode === "light" ? "/images/logo-dark.png" : "/images/logo-light.png"}
+            alt="MLYA"
+            fill
+            className="object-contain object-left"
+          />
+        </a>
 
         <p className="flex items-center gap-1.5 text-xs text-muted">
           &copy; {new Date().getFullYear()} &mdash; {t("footer.builtWith")}{" "}

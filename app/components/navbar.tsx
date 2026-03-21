@@ -135,17 +135,32 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="relative z-[60] md:hidden"
-          >
-            {mobileOpen ? (
-              <X className="h-6 w-6 text-foreground" />
-            ) : (
-              <Menu className="h-6 w-6 text-foreground" />
-            )}
-          </button>
+          {/* Mobile controls */}
+          <div className="flex items-center gap-3 md:hidden">
+            <div className="flex overflow-hidden rounded-full border border-card-border">
+              {(Object.keys(supportedLanguages) as SupportedLanguage[]).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => changeLang(key)}
+                  className={`px-3 py-1.5 font-display text-xs tracking-widest transition-all ${
+                    lang === key ? "bg-accent text-black" : "text-muted"
+                  }`}
+                >
+                  {supportedLanguages[key].label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="relative z-[60]"
+            >
+              {mobileOpen ? (
+                <X className="h-6 w-6 text-foreground" />
+              ) : (
+                <Menu className="h-6 w-6 text-foreground" />
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 

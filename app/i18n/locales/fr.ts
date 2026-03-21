@@ -95,6 +95,9 @@ export const fr = {
     messageLabel: "MESSAGE",
     messagePlaceholder: "Votre message...",
     send: "ENVOYER",
+    sending: "ENVOI...",
+    success: "Message envoyé avec succès !",
+    error: "Une erreur est survenue, réessayez.",
   },
   footer: {
     builtWith: "Built with",

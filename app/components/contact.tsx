@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -45,6 +45,24 @@ const socials = [
 export default function Contact() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? "success" : "error");
+      if (res.ok) setForm({ name: "", email: "", subject: "", message: "" });
+    } catch {
+      setStatus("error");
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -99,10 +117,7 @@ export default function Contact() {
         </p>
 
         <div className="grid gap-16 lg:grid-cols-2">
-          <form
-            className="space-y-5"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="reveal-up grid gap-5 sm:grid-cols-2">
               <div>
                 <label className="mb-2 block font-display text-[10px] tracking-[0.3em] text-muted">
@@ -110,6 +125,9 @@ export default function Contact() {
                 </label>
                 <input
                   type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full border-b border-card-border bg-transparent py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
                   placeholder={t("contact.namePlaceholder")}
                 />
@@ -120,6 +138,9 @@ export default function Contact() {
                 </label>
                 <input
                   type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full border-b border-card-border bg-transparent py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
                   placeholder={t("contact.emailPlaceholder")}
                 />
@@ -131,6 +152,9 @@ export default function Contact() {
               </label>
               <input
                 type="text"
+                required
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 className="w-full border-b border-card-border bg-transparent py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
                 placeholder={t("contact.subjectPlaceholder")}
               />
@@ -141,18 +165,28 @@ export default function Contact() {
               </label>
               <textarea
                 rows={4}
+                required
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="w-full resize-none border-b border-card-border bg-transparent py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
                 placeholder={t("contact.messagePlaceholder")}
               />
             </div>
-            <div className="reveal-up pt-4">
+            <div className="reveal-up pt-4 flex items-center gap-4">
               <button
                 type="submit"
-                className="group flex items-center gap-3 rounded-full bg-accent px-8 py-3.5 font-display text-sm tracking-widest text-black transition-transform hover:scale-105"
+                disabled={status === "loading"}
+                className="group flex items-center gap-3 rounded-full bg-accent px-8 py-3.5 font-display text-sm tracking-widest text-black transition-transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
               >
-                {t("contact.send")}
+                {status === "loading" ? t("contact.sending") : t("contact.send")}
                 <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
+              {status === "success" && (
+                <span className="text-sm text-green-400">{t("contact.success")}</span>
+              )}
+              {status === "error" && (
+                <span className="text-sm text-red-400">{t("contact.error")}</span>
+              )}
             </div>
           </form>
 

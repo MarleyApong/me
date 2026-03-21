@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { I18nProvider } from "./i18n";
+import QueryProvider from "./components/query-provider";
 import SmoothScroll from "./components/smooth-scroll";
 import Preloader from "./components/preloader";
 import CustomCursor from "./components/custom-cursor";
@@ -19,6 +20,7 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
   return (
+    <QueryProvider>
     <I18nProvider>
       {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
       <CustomCursor />
@@ -42,5 +44,6 @@ export default function Home() {
         </main>
       </SmoothScroll>
     </I18nProvider>
+    </QueryProvider>
   );
 }

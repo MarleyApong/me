@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -58,61 +59,77 @@ function formatDate(dateStr: string) {
   });
 }
 
+async function fetchAllRepos(): Promise<Repo[]> {
+  const allRepos: Repo[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const res = await fetch(
+      `https://api.github.com/users/MarleyApong/repos?per_page=100&page=${page}&sort=updated`
+    );
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      allRepos.push(...data);
+      page++;
+      if (data.length < 100) hasMore = false;
+    } else {
+      hasMore = false;
+    }
+  }
+
+  return allRepos.filter((r) => !EXCLUDED_REPOS.includes(r.name));
+}
+
 export default function Projects() {
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [filtered, setFiltered] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [langFilter, setLangFilter] = useState("All");
+  const [search, setSearchRaw] = useState("");
+  const [langFilter, setLangFilterRaw] = useState("All");
   const [visibleCount, setVisibleCount] = useState(PER_PAGE);
-  const [languages, setLanguages] = useState<string[]>([]);
+
+  const setSearch = (v: string) => {
+    setSearchRaw(v);
+    setVisibleCount(PER_PAGE);
+  };
+
+  const setLangFilter = (v: string) => {
+    setLangFilterRaw(v);
+    setVisibleCount(PER_PAGE);
+  };
   const [hoveredLang, setHoveredLang] = useState<string | null>(null);
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    async function fetchRepos() {
-      try {
-        const allRepos: Repo[] = [];
-        let page = 1;
-        let hasMore = true;
+  const { data: repos = [], isLoading: loading } = useQuery<Repo[]>({
+    queryKey: ["github-repos"],
+    queryFn: fetchAllRepos,
+  });
 
-        while (hasMore) {
-          const res = await fetch(
-            `https://api.github.com/users/MarleyApong/repos?per_page=100&page=${page}&sort=updated`,
-          );
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            allRepos.push(...data);
-            page++;
-            if (data.length < 100) hasMore = false;
-          } else {
-            hasMore = false;
-          }
-        }
+  const languages = useMemo(
+    () => [...new Set(repos.map((r) => r.language).filter(Boolean))] as string[],
+    [repos]
+  );
 
-        const cleaned = allRepos.filter(
-          (r) => !EXCLUDED_REPOS.includes(r.name),
-        );
-        setRepos(cleaned);
-        setFiltered(cleaned);
+  const filtered = useMemo(() => {
+    let result = repos;
 
-        const langs = [
-          ...new Set(cleaned.map((r) => r.language).filter(Boolean)),
-        ] as string[];
-        setLanguages(langs);
-      } catch {
-        console.error("Failed to fetch repos");
-      } finally {
-        setLoading(false);
-      }
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (r) =>
+          r.name.toLowerCase().includes(q) ||
+          (r.description && r.description.toLowerCase().includes(q))
+      );
     }
 
-    fetchRepos();
-  }, []);
+    if (langFilter !== "All") {
+      result = result.filter((r) => r.language === langFilter);
+    }
 
-  // Animate cards on mount
+    return result;
+  }, [repos, search, langFilter]);
+
+  // Animate cards
   useEffect(() => {
     if (loading || !gridRef.current) return;
 
@@ -131,29 +148,9 @@ export default function Projects() {
           start: "top 85%",
           once: true,
         },
-      },
+      }
     );
   }, [loading, filtered, visibleCount]);
-
-  useEffect(() => {
-    let result = repos;
-
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (r) =>
-          r.name.toLowerCase().includes(q) ||
-          (r.description && r.description.toLowerCase().includes(q)),
-      );
-    }
-
-    if (langFilter !== "All") {
-      result = result.filter((r) => r.language === langFilter);
-    }
-
-    setFiltered(result);
-    setVisibleCount(PER_PAGE);
-  }, [search, langFilter, repos]);
 
   const langCounts = useMemo(() => {
     const counts: Record<string, number> = {};

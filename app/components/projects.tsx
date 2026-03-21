@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -96,7 +96,21 @@ export default function Projects() {
     setVisibleCount(PER_PAGE);
   };
   const [hoveredLang, setHoveredLang] = useState<string | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+
+  // Close dropdown on outside click
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+      setFilterOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleClickOutside]);
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -214,20 +228,51 @@ export default function Projects() {
               className="w-full rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-4 text-sm text-foreground outline-none transition-colors focus:border-accent"
             />
           </div>
-          <div className="relative">
-            <Filter className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-            <select
-              value={langFilter}
-              onChange={(e) => setLangFilter(e.target.value)}
-              className="appearance-none rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-10 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          <div className="relative" ref={filterRef}>
+            <button
+              onClick={() => setFilterOpen(!filterOpen)}
+              className="flex items-center gap-2 rounded-xl border border-card-border bg-card-bg py-3 pl-4 pr-5 text-sm text-foreground transition-colors hover:border-accent/50"
             >
-              <option value="All">{t("projects.allLangs")} ({repos.length})</option>
-              {languages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang} ({langCounts[lang] || 0})
-                </option>
-              ))}
-            </select>
+              <Filter className="h-4 w-4 text-muted" />
+              {langFilter === "All"
+                ? `${t("projects.allLangs")} (${repos.length})`
+                : `${langFilter} (${langCounts[langFilter] || 0})`}
+            </button>
+            {filterOpen && (
+              <div className="absolute right-0 top-full z-20 mt-2 max-h-64 w-52 overflow-y-auto rounded-xl border border-card-border bg-card-bg py-1 shadow-xl">
+                <button
+                  onClick={() => {
+                    setLangFilter("All");
+                    setFilterOpen(false);
+                  }}
+                  className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors hover:bg-foreground/5 ${
+                    langFilter === "All" ? "text-accent" : "text-muted"
+                  }`}
+                >
+                  {t("projects.allLangs")} ({repos.length})
+                </button>
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      setLangFilter(lang);
+                      setFilterOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors hover:bg-foreground/5 ${
+                      langFilter === lang ? "text-accent" : "text-muted"
+                    }`}
+                  >
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{
+                        backgroundColor: LANGUAGES_COLORS[lang] || "#888",
+                      }}
+                    />
+                    {lang} ({langCounts[lang] || 0})
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -294,7 +339,7 @@ export default function Projects() {
                     onMouseLeave={() => setHoveredLang(null)}
                   >
                     <div
-                      className="group relative overflow-hidden rounded-2xl border border-card-border bg-card-bg transition-all duration-500 hover:border-transparent hover:shadow-[0_0_30px_rgba(245,166,35,0.08)]"
+                      className="group relative overflow-hidden rounded-lg border border-card-border bg-card-bg transition-all duration-500 hover:border-transparent hover:shadow-[0_0_30px_rgba(245,166,35,0.08)]"
                       style={
                         {
                           "--card-accent": langColor,

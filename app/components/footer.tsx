@@ -24,6 +24,9 @@ export default function Footer() {
         >
           &copy; {new Date().getFullYear()} &mdash; Built with{" "}
           <Heart className="h-3 w-3 text-accent" /> and TypeScript
+          <span className="ml-2 rounded-md bg-foreground/5 px-2 py-0.5 text-xs">
+            v{process.env.APP_VERSION}
+          </span>
         </motion.p>
 
         <motion.p

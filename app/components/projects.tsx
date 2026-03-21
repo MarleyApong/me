@@ -78,7 +78,7 @@ export default function Projects() {
 
         while (hasMore) {
           const res = await fetch(
-            `https://api.github.com/users/MarleyApong/repos?per_page=100&page=${page}&sort=updated`
+            `https://api.github.com/users/MarleyApong/repos?per_page=100&page=${page}&sort=updated`,
           );
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
@@ -91,7 +91,7 @@ export default function Projects() {
         }
 
         const cleaned = allRepos.filter(
-          (r) => !EXCLUDED_REPOS.includes(r.name)
+          (r) => !EXCLUDED_REPOS.includes(r.name),
         );
         setRepos(cleaned);
         setFiltered(cleaned);
@@ -129,7 +129,7 @@ export default function Projects() {
           start: "top 85%",
           once: true,
         },
-      }
+      },
     );
   }, [loading, filtered, visibleCount]);
 
@@ -141,7 +141,7 @@ export default function Projects() {
       result = result.filter(
         (r) =>
           r.name.toLowerCase().includes(q) ||
-          (r.description && r.description.toLowerCase().includes(q))
+          (r.description && r.description.toLowerCase().includes(q)),
       );
     }
 
@@ -185,7 +185,7 @@ export default function Projects() {
       }}
     >
       {/* Background number */}
-      <div className="pointer-events-none absolute left-6 top-20 font-display text-[15rem] leading-none text-foreground/[0.02] select-none md:text-[25rem]">
+      <div className="pointer-events-none absolute left-6 top-20 font-display text-[15rem] leading-none text-foreground/2 select-none md:text-[25rem]">
         04
       </div>
 
@@ -195,15 +195,13 @@ export default function Projects() {
           <span className="font-display text-sm tracking-[0.3em] text-accent">
             04
           </span>
-          <div className="h-[1px] w-12 bg-accent/30" />
+          <div className="h-px w-12 bg-accent/30" />
           <h2 className="font-display text-6xl tracking-tight md:text-8xl">
             PROJECTS<span className="text-accent">.</span>
           </h2>
         </div>
 
-        <p className="mb-8 text-muted">
-          {repos.length} repositories on GitHub
-        </p>
+        <p className="mb-8 text-muted">{repos.length} repositories on GitHub</p>
 
         {/* Search & Filter */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row">
@@ -249,9 +247,7 @@ export default function Projects() {
           {languages.slice(0, 8).map((lang) => (
             <button
               key={lang}
-              onClick={() =>
-                setLangFilter(lang === langFilter ? "All" : lang)
-              }
+              onClick={() => setLangFilter(lang === langFilter ? "All" : lang)}
               className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-300 ${
                 langFilter === lang
                   ? "bg-accent text-black"
@@ -285,10 +281,9 @@ export default function Projects() {
             >
               {filtered.slice(0, visibleCount).map((repo, i) => {
                 const size = getCardClass(repo, i);
-                const langColor =
-                  repo.language
-                    ? LANGUAGES_COLORS[repo.language] || "#888"
-                    : "var(--accent)";
+                const langColor = repo.language
+                  ? LANGUAGES_COLORS[repo.language] || "#888"
+                  : "var(--accent)";
 
                 return (
                   <div
@@ -309,15 +304,11 @@ export default function Projects() {
                     >
                       {/* Top accent line */}
                       <div
-                        className="h-[2px] w-full"
+                        className="h-0.5 w-full"
                         style={{ backgroundColor: langColor }}
                       />
 
-                      <div
-                        className={`${
-                          size === "tall" ? "p-8" : "p-6"
-                        }`}
-                      >
+                      <div className={`${size === "tall" ? "p-8" : "p-6"}`}>
                         {/* Header */}
                         <div className="mb-3 flex items-center justify-between">
                           {repo.language ? (

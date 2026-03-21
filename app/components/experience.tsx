@@ -32,8 +32,8 @@ const experiences = [
     company: "Projets Personnels",
     org: "",
     description:
-      "Apprentissage intensif et construction de projets personnels. Maitrise du stack JavaScript/TypeScript fullstack.",
-    tech: ["React", "Express", "MySQL", "JavaScript"],
+      "Apprentissage intensif et construction de projets personnels. Developpement web avec PHP puis transition vers le stack JavaScript/TypeScript fullstack.",
+    tech: ["PHP", "JavaScript", "React", "MySQL"],
   },
 ];
 

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(cp \"C:/Users/AAMW/Downloads/Snapchat-75314550.jpg\" \"D:/Projects/Development/me/public/images/portrait-1.jpg\")",
       "Bash(cp \"C:/Users/AAMW/Downloads/IMG_20250924_075606.jpg\" \"D:/Projects/Development/me/public/images/portrait-2.jpg\")",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(cp \"c:/Users/AAMW/Downloads/photoshop.png\" \"D:/Projects/Development/me/public/images/portrait-lineart.png\")",
+      "Bash(cp \"c:/Users/AAMW/Downloads/Gemini_Generated_Image_pche9dpche9dpche.png\" \"D:/Projects/Development/me/public/images/portrait-hero.png\")"
     ]
   }
 }

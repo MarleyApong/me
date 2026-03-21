@@ -14,19 +14,19 @@ export default function NotFound() {
       tl.fromTo(
         ".nf-number",
         { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "power3.out" }
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "power3.out" },
       )
         .fromTo(
           ".nf-text",
           { y: 30, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-          "-=0.3"
+          "-=0.3",
         )
         .fromTo(
           ".nf-cta",
           { y: 20, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-          "-=0.2"
+          "-=0.2",
         );
     }, containerRef);
 

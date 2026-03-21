@@ -113,9 +113,9 @@ export default function About() {
         >
           {/* Photo card */}
           <div className="bento-card row-span-2 overflow-hidden rounded-3xl border border-card-border bg-card-bg">
-            <div className="relative h-full min-h-[300px]">
+            <div className="relative h-full min-h-[300px] bg-card-bg">
               <Image
-                src="/images/portrait-2.jpg"
+                src="/images/portrait-hero.png"
                 alt="APONG MARLEY"
                 fill
                 className="object-cover"

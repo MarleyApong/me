@@ -159,26 +159,31 @@ export default function Hero() {
         </div>
 
         <div ref={photoRef} className="relative opacity-0">
-          <div className="absolute -right-5 -top-5 h-full w-full rounded-3xl bg-accent/20" />
-          <div className="absolute -right-2 -top-2 h-full w-full rounded-3xl bg-accent/10" />
+          {/* Accent background block */}
+          <div className="absolute -right-4 bottom-0 h-[85%] w-[90%] rounded-3xl bg-accent/20" />
 
-          <div className="relative h-[350px] w-[280px] overflow-hidden rounded-3xl sm:h-[480px] sm:w-[360px]">
+          {/* Portrait lineart */}
+          <div className="relative h-[450px] w-[360px] overflow-hidden rounded-3xl sm:h-[620px] sm:w-[480px]">
             <Image
-              src="/images/portrait-1.jpg"
+              src="/images/portrait-lineart.png"
               alt="ASSOH APONG MARLEY WALTER"
               fill
-              className="object-cover"
+              className="lineart-img object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            {/* Fade edges into background */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-l from-background via-transparent to-transparent opacity-70" />
           </div>
 
-          <div className="absolute -left-6 bottom-8 rounded-2xl border border-card-border bg-card-bg/90 px-5 py-3 backdrop-blur-sm">
+          {/* Floating stats badge */}
+          <div className="absolute -left-6 bottom-16 rounded-2xl border border-card-border bg-card-bg/90 px-5 py-3 backdrop-blur-sm">
             <p className="font-display text-3xl text-accent">4+</p>
             <p className="text-xs text-muted">{t("hero.years")}</p>
           </div>
 
-          <div className="absolute -right-3 top-8 flex items-center gap-2 rounded-full border border-card-border bg-card-bg/90 px-4 py-2 backdrop-blur-sm">
+          {/* Available dot */}
+          <div className="absolute -right-3 top-16 flex items-center gap-2 rounded-full border border-card-border bg-card-bg/90 px-4 py-2 backdrop-blur-sm">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />

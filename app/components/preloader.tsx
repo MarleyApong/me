@@ -71,7 +71,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505]"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
     >
       {/* Name reveal */}
       <div ref={nameRef} className="relative">

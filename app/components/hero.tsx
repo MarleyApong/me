@@ -170,7 +170,7 @@ export default function Hero() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
 
           <div className="absolute -left-6 bottom-8 rounded-2xl border border-card-border bg-card-bg/90 px-5 py-3 backdrop-blur-sm">

@@ -62,7 +62,8 @@ export default function Navbar() {
         style={{
           transform: visible ? "translateY(0)" : "translateY(-100%)",
           backdropFilter: "blur(12px)",
-          background: "rgba(10, 10, 10, 0.8)",
+          background: "var(--background)",
+          opacity: 0.95,
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -145,7 +146,7 @@ export default function Navbar() {
 
       {/* Mobile fullscreen menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-2 bg-[#050505]">
+        <div className="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-2 bg-background">
           {links.map((link, i) => (
             <a
               key={link.href}

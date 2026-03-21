@@ -77,7 +77,7 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative overflow-hidden bg-[#050505] px-6 py-28 md:px-12"
+      className="relative overflow-hidden bg-card-bg px-6 py-28 md:px-12"
     >
       <div className="pointer-events-none absolute right-6 top-20 font-display text-[15rem] leading-none text-foreground/[0.02] select-none md:text-[25rem]">
         05

@@ -89,7 +89,7 @@ export default function Experience() {
         style={{ width: "max-content" }}
       >
         {/* Intro card */}
-        <div className="flex h-[420px] w-[350px] shrink-0 flex-col justify-center rounded-3xl border border-accent/20 bg-accent/5 p-10 md:w-[400px]">
+        <div className="flex h-[420px] w-[350px] shrink-0 flex-col justify-center rounded-3xl border border-accent/20 bg-accent/[0.05] p-10 md:w-[400px]">
           <Briefcase className="mb-4 h-8 w-8 text-accent" />
           <h3 className="mb-3 font-display text-4xl tracking-wider">
             {t("experience.journey")}

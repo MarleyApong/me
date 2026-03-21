@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-:root {
+/* Dark mode (default) */
+:root,
+[data-mode="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   --accent: #f5a623;
@@ -9,6 +11,17 @@
   --card-border: #1f1f1f;
   --muted: #888888;
   --cursor-size: 20px;
+}
+
+/* Light mode */
+[data-mode="light"] {
+  --background: #f5f5f0;
+  --foreground: #111111;
+  --accent: #f5a623;
+  --accent-dark: #e09000;
+  --card-bg: #ffffff;
+  --card-border: #e5e5e5;
+  --muted: #6b7280;
 }
 
 @theme inline {
@@ -37,6 +50,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Noise grain overlay */

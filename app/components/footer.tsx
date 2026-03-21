@@ -7,7 +7,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="border-t border-card-border bg-[#050505] px-6 py-10 md:px-12">
+    <footer className="border-t border-card-border bg-card-bg px-6 py-10 md:px-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
         <p className="font-display text-xl tracking-[0.2em] text-foreground">
           AM<span className="text-accent">.</span>

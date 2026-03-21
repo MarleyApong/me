@@ -34,7 +34,7 @@ export default function RootLayout({
       <body
         className={`${bebasNeue.variable} ${caveat.variable} ${inter.variable} antialiased`}
       >
-        {children}
+        <div id="main-content">{children}</div>
       </body>
     </html>
   );

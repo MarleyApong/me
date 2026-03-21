@@ -1,42 +1,26 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-foreground/5 px-6 py-12 md:px-16">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="font-display text-xl tracking-wider"
-        >
-          APONG MARLEY <span className="text-accent">.</span>
-        </motion.p>
+    <footer className="border-t border-card-border bg-[#050505] px-6 py-10 md:px-12">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
+        <p className="font-display text-xl tracking-[0.2em] text-foreground">
+          AM<span className="text-accent">.</span>
+        </p>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="flex items-center gap-1 text-sm text-muted"
-        >
+        <p className="flex items-center gap-1.5 text-xs text-muted">
           &copy; {new Date().getFullYear()} &mdash; Built with{" "}
           <Heart className="h-3 w-3 text-accent" /> and TypeScript
-          <span className="ml-2 rounded-md bg-foreground/5 px-2 py-0.5 text-xs">
+          <span className="ml-2 rounded-md border border-card-border px-2 py-0.5 text-[10px]">
             v{process.env.APP_VERSION}
           </span>
-        </motion.p>
+        </p>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="font-hand text-lg text-accent"
-        >
+        <p className="font-hand text-sm text-accent/60">
           &ldquo;Do it once, do it right, do it with TypeScript.&rdquo;
-        </motion.p>
+        </p>
       </div>
     </footer>
   );

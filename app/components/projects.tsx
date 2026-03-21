@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ExternalLink,
   Github,
@@ -11,7 +12,8 @@ import {
   Filter,
   Calendar,
 } from "lucide-react";
-import SectionNumber from "./section-number";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Repo {
   id: number;
@@ -38,46 +40,18 @@ const LANGUAGES_COLORS: Record<string, string> = {
   PHP: "#4F5D95",
   Shell: "#89e051",
   "C#": "#178600",
-  C: "#555555",
   "C++": "#f34b7d",
   Go: "#00ADD8",
   Kotlin: "#A97BFF",
-  Swift: "#F05138",
-  Ruby: "#701516",
-  Rust: "#dea584",
   Vue: "#41b883",
+  Rust: "#dea584",
 };
 
 const PER_PAGE = 12;
 const EXCLUDED_REPOS = ["Microsoft-Activation-Scripts", "excalidraw"];
 
-// Tailles de cartes pour l'effet mosaique Pinterest
-const CARD_SIZES = ["small", "medium", "tall", "wide"] as const;
-type CardSize = (typeof CARD_SIZES)[number];
-
-function getCardSize(repo: Repo, index: number): CardSize {
-  // Les projets avec description longue ou beaucoup de stars sont plus grands
-  const hasLongDesc = repo.description && repo.description.length > 80;
-  const hasStars = repo.stargazers_count > 0;
-  const hasHomepage = !!repo.homepage;
-
-  if (hasStars && hasLongDesc) return "tall";
-  if (hasHomepage && index % 5 === 0) return "wide";
-  if (hasLongDesc || index % 7 === 0) return "medium";
-  if (index % 4 === 0) return "tall";
-  return "small";
-}
-
-const sizeClasses: Record<CardSize, string> = {
-  small: "row-span-1",
-  medium: "row-span-1",
-  tall: "row-span-2",
-  wide: "col-span-1 md:col-span-2 row-span-1",
-};
-
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("fr-FR", {
+  return new Date(dateStr).toLocaleDateString("fr-FR", {
     month: "short",
     year: "numeric",
   });
@@ -91,6 +65,9 @@ export default function Projects() {
   const [langFilter, setLangFilter] = useState("All");
   const [visibleCount, setVisibleCount] = useState(PER_PAGE);
   const [languages, setLanguages] = useState<string[]>([]);
+  const [hoveredLang, setHoveredLang] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchRepos() {
@@ -133,6 +110,29 @@ export default function Projects() {
     fetchRepos();
   }, []);
 
+  // Animate cards on mount
+  useEffect(() => {
+    if (loading || !gridRef.current) return;
+
+    const cards = gridRef.current.querySelectorAll(".project-card");
+    gsap.fromTo(
+      cards,
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.04,
+        duration: 0.6,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      }
+    );
+  }, [loading, filtered, visibleCount]);
+
   useEffect(() => {
     let result = repos;
 
@@ -153,7 +153,6 @@ export default function Projects() {
     setVisibleCount(PER_PAGE);
   }, [search, langFilter, repos]);
 
-  // Compteurs de langages pour les filtres
   const langCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     repos.forEach((r) => {
@@ -162,36 +161,52 @@ export default function Projects() {
     return counts;
   }, [repos]);
 
+  // Determine card size for masonry
+  function getCardClass(repo: Repo, i: number): string {
+    const hasLongDesc = repo.description && repo.description.length > 80;
+    const hasStars = repo.stargazers_count > 0;
+    const hasTopics = repo.topics && repo.topics.length > 2;
+
+    if ((hasStars && hasLongDesc) || i % 7 === 0) return "tall";
+    if (hasTopics || hasLongDesc) return "medium";
+    return "small";
+  }
+
   return (
     <section
+      ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden px-6 py-24 md:px-16"
+      className="relative overflow-hidden px-6 py-28 md:px-12"
+      style={{
+        backgroundColor: hoveredLang
+          ? `${LANGUAGES_COLORS[hoveredLang] || "#f5a623"}08`
+          : "transparent",
+        transition: "background-color 0.6s ease",
+      }}
     >
-      <SectionNumber number="04" />
+      {/* Background number */}
+      <div className="pointer-events-none absolute left-6 top-20 font-display text-[15rem] leading-none text-foreground/[0.02] select-none md:text-[25rem]">
+        04
+      </div>
 
-      <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <span className="font-hand text-2xl text-accent">&ldquo;</span>
-          <h2 className="font-display text-6xl md:text-8xl">PROJECTS.</h2>
-          <p className="mt-2 text-muted">
-            {repos.length} repositories on GitHub
-          </p>
-        </motion.div>
+      <div className="mx-auto max-w-7xl">
+        {/* Title */}
+        <div className="mb-12 flex items-end gap-4">
+          <span className="font-display text-sm tracking-[0.3em] text-accent">
+            04
+          </span>
+          <div className="h-[1px] w-12 bg-accent/30" />
+          <h2 className="font-display text-6xl tracking-tight md:text-8xl">
+            PROJECTS<span className="text-accent">.</span>
+          </h2>
+        </div>
 
-        {/* Search & Filter bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-6 flex flex-col gap-4 sm:flex-row"
-        >
+        <p className="mb-8 text-muted">
+          {repos.length} repositories on GitHub
+        </p>
+
+        {/* Search & Filter */}
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input
@@ -199,7 +214,7 @@ export default function Projects() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Rechercher un projet..."
-              className="w-full rounded-xl border border-foreground/10 bg-card-bg py-3 pl-11 pr-4 text-sm outline-none transition-colors focus:border-accent"
+              className="w-full rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-4 text-sm text-foreground outline-none transition-colors focus:border-accent"
             />
           </div>
           <div className="relative">
@@ -207,9 +222,9 @@ export default function Projects() {
             <select
               value={langFilter}
               onChange={(e) => setLangFilter(e.target.value)}
-              className="appearance-none rounded-xl border border-foreground/10 bg-card-bg py-3 pl-11 pr-10 text-sm outline-none transition-colors focus:border-accent"
+              className="appearance-none rounded-2xl border border-card-border bg-card-bg py-3 pl-11 pr-10 text-sm text-foreground outline-none transition-colors focus:border-accent"
             >
-              <option value="All">Tous les langages ({repos.length})</option>
+              <option value="All">Tous ({repos.length})</option>
               {languages.map((lang) => (
                 <option key={lang} value={lang}>
                   {lang} ({langCounts[lang] || 0})
@@ -217,22 +232,16 @@ export default function Projects() {
               ))}
             </select>
           </div>
-        </motion.div>
+        </div>
 
         {/* Language pills */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-8 flex flex-wrap gap-2"
-        >
+        <div className="mb-10 flex flex-wrap gap-2">
           <button
             onClick={() => setLangFilter("All")}
-            className={`rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+            className={`rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-300 ${
               langFilter === "All"
                 ? "bg-accent text-black"
-                : "bg-card-bg text-muted hover:bg-foreground/5"
+                : "border border-card-border text-muted hover:border-accent/50 hover:text-accent"
             }`}
           >
             All
@@ -240,11 +249,13 @@ export default function Projects() {
           {languages.slice(0, 8).map((lang) => (
             <button
               key={lang}
-              onClick={() => setLangFilter(lang === langFilter ? "All" : lang)}
-              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+              onClick={() =>
+                setLangFilter(lang === langFilter ? "All" : lang)
+              }
+              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-300 ${
                 langFilter === lang
                   ? "bg-accent text-black"
-                  : "bg-card-bg text-muted hover:bg-foreground/5"
+                  : "border border-card-border text-muted hover:border-accent/50 hover:text-accent"
               }`}
             >
               <span
@@ -256,74 +267,64 @@ export default function Projects() {
               {lang}
             </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Loading state */}
+        {/* Loading */}
         {loading && (
           <div className="flex items-center justify-center py-20">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-              className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent"
-            />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
           </div>
         )}
 
-        {/* Masonry grid */}
+        {/* Masonry Grid */}
         {!loading && (
           <>
             <div
-              className="columns-1 gap-5 sm:columns-2 lg:columns-3"
-              style={{ columnFill: "balance" }}
+              ref={gridRef}
+              className="columns-1 gap-4 sm:columns-2 lg:columns-3"
             >
-              <AnimatePresence mode="popLayout">
-                {filtered.slice(0, visibleCount).map((repo, i) => {
-                  const size = getCardSize(repo, i);
-                  const isTall = size === "tall";
-                  const isWide = size === "wide";
+              {filtered.slice(0, visibleCount).map((repo, i) => {
+                const size = getCardClass(repo, i);
+                const langColor =
+                  repo.language
+                    ? LANGUAGES_COLORS[repo.language] || "#888"
+                    : "var(--accent)";
 
-                  return (
-                    <motion.div
-                      key={repo.id}
-                      layout
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: i * 0.03, duration: 0.4 }}
-                      className={`mb-5 break-inside-avoid ${sizeClasses[size]}`}
+                return (
+                  <div
+                    key={repo.id}
+                    className="project-card mb-4 break-inside-avoid opacity-0"
+                    onMouseEnter={() =>
+                      repo.language && setHoveredLang(repo.language)
+                    }
+                    onMouseLeave={() => setHoveredLang(null)}
+                  >
+                    <div
+                      className="group relative overflow-hidden rounded-2xl border border-card-border bg-card-bg transition-all duration-500 hover:border-transparent hover:shadow-[0_0_30px_rgba(245,166,35,0.08)]"
+                      style={
+                        {
+                          "--card-accent": langColor,
+                        } as React.CSSProperties
+                      }
                     >
-                      <motion.div
-                        whileHover={{ y: -6, scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className={`group relative overflow-hidden rounded-2xl bg-card-bg shadow-md transition-shadow hover:shadow-2xl ${
-                          isTall ? "p-8" : isWide ? "p-6" : "p-5"
+                      {/* Top accent line */}
+                      <div
+                        className="h-[2px] w-full"
+                        style={{ backgroundColor: langColor }}
+                      />
+
+                      <div
+                        className={`${
+                          size === "tall" ? "p-8" : "p-6"
                         }`}
                       >
-                        {/* Accent gradient top */}
-                        <motion.div
-                          initial={{ scaleX: 0 }}
-                          whileInView={{ scaleX: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.03 + 0.2, duration: 0.6 }}
-                          className="absolute left-0 top-0 h-1 w-full origin-left"
-                          style={{
-                            backgroundColor:
-                              repo.language
-                                ? LANGUAGES_COLORS[repo.language] || "#888"
-                                : "var(--accent)",
-                          }}
-                        />
-
-                        {/* Header : language + stats */}
+                        {/* Header */}
                         <div className="mb-3 flex items-center justify-between">
                           {repo.language ? (
-                            <span className="flex items-center gap-1.5 rounded-full bg-foreground/5 px-2.5 py-1 text-xs font-medium">
+                            <span className="flex items-center gap-1.5 text-xs font-medium text-muted">
                               <span
                                 className="h-2 w-2 rounded-full"
-                                style={{
-                                  backgroundColor:
-                                    LANGUAGES_COLORS[repo.language] || "#888",
-                                }}
+                                style={{ backgroundColor: langColor }}
                               />
                               {repo.language}
                             </span>
@@ -346,27 +347,26 @@ export default function Projects() {
                           </div>
                         </div>
 
-                        {/* Title */}
+                        {/* Name */}
                         <h3
-                          className={`mb-2 font-display tracking-wider ${
-                            isTall ? "text-2xl" : "text-lg"
+                          className={`mb-2 font-display tracking-wider transition-colors group-hover:text-accent ${
+                            size === "tall" ? "text-2xl" : "text-lg"
                           }`}
                         >
                           {repo.name.replace(/[-_]/g, " ")}
                         </h3>
 
                         {/* Description */}
-                        {repo.description && (
+                        {repo.description ? (
                           <p
                             className={`mb-4 text-sm leading-relaxed text-muted ${
-                              isTall ? "" : "line-clamp-3"
+                              size === "tall" ? "" : "line-clamp-3"
                             }`}
                           >
                             {repo.description}
                           </p>
-                        )}
-                        {!repo.description && (
-                          <p className="mb-4 text-sm italic text-muted/50">
+                        ) : (
+                          <p className="mb-4 text-sm italic text-muted/40">
                             No description provided.
                           </p>
                         )}
@@ -374,21 +374,23 @@ export default function Projects() {
                         {/* Topics */}
                         {repo.topics && repo.topics.length > 0 && (
                           <div className="mb-4 flex flex-wrap gap-1.5">
-                            {repo.topics.slice(0, isTall ? 6 : 3).map((topic) => (
-                              <span
-                                key={topic}
-                                className="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent"
-                              >
-                                {topic}
-                              </span>
-                            ))}
+                            {repo.topics
+                              .slice(0, size === "tall" ? 6 : 3)
+                              .map((topic) => (
+                                <span
+                                  key={topic}
+                                  className="rounded-md bg-foreground/5 px-2 py-0.5 text-[10px] font-medium text-muted"
+                                >
+                                  {topic}
+                                </span>
+                              ))}
                           </div>
                         )}
 
                         {/* Date */}
-                        <div className="mb-4 flex items-center gap-1 text-[10px] text-muted/60">
+                        <div className="mb-4 flex items-center gap-1 text-[10px] text-muted/50">
                           <Calendar className="h-2.5 w-2.5" />
-                          Mis a jour {formatDate(repo.updated_at)}
+                          {formatDate(repo.updated_at)}
                         </div>
 
                         {/* Actions */}
@@ -397,7 +399,7 @@ export default function Projects() {
                             href={repo.html_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 rounded-lg bg-foreground/5 px-3 py-1.5 text-xs font-medium transition-all hover:bg-accent hover:text-black"
+                            className="flex items-center gap-1.5 rounded-xl border border-card-border px-3 py-1.5 text-xs font-medium text-muted transition-all hover:border-accent hover:text-accent"
                           >
                             <Github className="h-3.5 w-3.5" />
                             Code
@@ -407,41 +409,35 @@ export default function Projects() {
                               href={repo.homepage}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-black transition-all hover:bg-accent-dark"
+                              className="flex items-center gap-1.5 rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-black transition-all hover:bg-accent-dark"
                             >
                               <ExternalLink className="h-3.5 w-3.5" />
                               Demo
                             </a>
                           )}
                         </div>
-                      </motion.div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Load more */}
             {visibleCount < filtered.length && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="mt-12 flex justify-center"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+              <div className="mt-12 flex justify-center">
+                <button
                   onClick={() => setVisibleCount((v) => v + PER_PAGE)}
-                  className="rounded-full border-2 border-accent px-8 py-3 font-display tracking-wider text-accent transition-colors hover:bg-accent hover:text-black"
+                  className="rounded-full border border-accent/30 px-8 py-3 font-display text-sm tracking-widest text-accent transition-all hover:bg-accent hover:text-black"
                 >
                   VOIR PLUS ({filtered.length - visibleCount} restants)
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
             )}
 
-            {!loading && filtered.length === 0 && (
+            {filtered.length === 0 && (
               <p className="py-20 text-center text-muted">
-                Aucun projet trouve.
+                Aucun projet trouvé.
               </p>
             )}
           </>

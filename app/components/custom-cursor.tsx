@@ -7,18 +7,9 @@ export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [isTouch, setIsTouch] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    // Detect touch device
-    const touch =
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      !window.matchMedia("(pointer: fine)").matches;
-    setIsTouch(touch);
-    if (touch) return;
-
     const cursor = cursorRef.current;
     const follower = followerRef.current;
     if (!cursor || !follower) return;
@@ -29,6 +20,7 @@ export default function CustomCursor() {
     const onMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
+      setHidden(false);
 
       gsap.to(cursor, {
         x: e.clientX,
@@ -37,14 +29,13 @@ export default function CustomCursor() {
       });
     };
 
-    // Follower with delay
-    gsap.ticker.add(() => {
+    const tickerFn = () => {
       pos.x += (mouse.x - pos.x) * 0.15;
       pos.y += (mouse.y - pos.y) * 0.15;
       gsap.set(follower, { x: pos.x, y: pos.y });
-    });
+    };
+    gsap.ticker.add(tickerFn);
 
-    // Detect hoverable elements
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (
@@ -82,17 +73,16 @@ export default function CustomCursor() {
       document.removeEventListener("mouseout", onMouseOut);
       document.removeEventListener("mouseleave", onMouseLeave);
       document.removeEventListener("mouseenter", onMouseEnter);
+      gsap.ticker.remove(tickerFn);
     };
   }, []);
-
-  if (isTouch) return null;
 
   return (
     <>
       {/* Dot */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[9998]"
         style={{
           opacity: hidden ? 0 : 1,
           transition: "opacity 0.3s",
@@ -112,7 +102,7 @@ export default function CustomCursor() {
       {/* Follower ring */}
       <div
         ref={followerRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9997] hidden md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[9997]"
         style={{
           opacity: hidden ? 0 : 1,
           transition: "opacity 0.3s",

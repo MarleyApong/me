@@ -3,14 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Menu, X, ArrowUpRight, Languages } from "lucide-react";
+import Image from "next/image";
 import {
   useTranslation,
   supportedLanguages,
   type SupportedLanguage,
 } from "../i18n";
+import { useTheme } from "./theme-provider";
 
 export default function Navbar() {
   const { t, lang, changeLang } = useTranslation();
+  const { mode } = useTheme();
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -67,11 +70,13 @@ export default function Navbar() {
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <a
-            href="#home"
-            className="font-display text-2xl tracking-[0.2em] text-foreground transition-colors hover:text-accent"
-          >
-            AM<span className="text-accent">.</span>
+          <a href="#home" className="relative h-10 w-32">
+            <Image
+              src={mode === "light" ? "/images/logo-dark.png" : "/images/logo-light.png"}
+              alt="MLYA"
+              fill
+              className="object-contain object-left"
+            />
           </a>
 
           {/* Desktop */}

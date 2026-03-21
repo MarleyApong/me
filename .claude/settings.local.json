@@ -5,7 +5,10 @@
       "Bash(cp \"C:/Users/AAMW/Downloads/IMG_20250924_075606.jpg\" \"D:/Projects/Development/me/public/images/portrait-2.jpg\")",
       "Bash(npm install:*)",
       "Bash(cp \"c:/Users/AAMW/Downloads/photoshop.png\" \"D:/Projects/Development/me/public/images/portrait-lineart.png\")",
-      "Bash(cp \"c:/Users/AAMW/Downloads/Gemini_Generated_Image_pche9dpche9dpche.png\" \"D:/Projects/Development/me/public/images/portrait-hero.png\")"
+      "Bash(cp \"c:/Users/AAMW/Downloads/Gemini_Generated_Image_pche9dpche9dpche.png\" \"D:/Projects/Development/me/public/images/portrait-hero.png\")",
+      "Bash(cp \"c:/Users/AAMW/Downloads/3cd10697-ced2-4d98-8e84-2c7cf081b06a_removalai_preview.png\" \"D:/Projects/Development/me/app/favicon.png\")",
+      "Bash(cp \"d:/Projects/Montage/Me/me.png\" \"D:/Projects/Development/me/public/images/logo-dark.png\")",
+      "Bash(cp \"d:/Projects/Montage/Me/me-light.png\" \"D:/Projects/Development/me/public/images/logo-light.png\")"
     ]
   }
 }

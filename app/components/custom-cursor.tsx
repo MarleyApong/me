@@ -8,8 +8,17 @@ export default function CustomCursor() {
   const followerRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    // Detect touch device
+    const touch =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      !window.matchMedia("(pointer: fine)").matches;
+    setIsTouch(touch);
+    if (touch) return;
+
     const cursor = cursorRef.current;
     const follower = followerRef.current;
     if (!cursor || !follower) return;
@@ -75,6 +84,8 @@ export default function CustomCursor() {
       document.removeEventListener("mouseenter", onMouseEnter);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <>

@@ -37,8 +37,11 @@
   --font-sans: var(--font-inter);
 }
 
-* {
-  cursor: none;
+/* Custom cursor only on non-touch devices */
+@media (pointer: fine) {
+  * {
+    cursor: none;
+  }
 }
 
 html {

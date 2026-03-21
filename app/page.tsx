@@ -8,6 +8,7 @@ import SmoothScroll from "./components/smooth-scroll";
 import Preloader from "./components/preloader";
 import CustomCursor from "./components/custom-cursor";
 import ThemePanel from "./components/theme-panel";
+import BackToTop from "./components/back-to-top";
 import Navbar from "./components/navbar";
 import Hero from "./components/hero";
 import Marquee from "./components/marquee";
@@ -47,6 +48,7 @@ export default function Home() {
             </main>
           </SmoothScroll>
           <ThemePanel />
+          <BackToTop />
         </I18nProvider>
       </ThemeProvider>
     </QueryProvider>

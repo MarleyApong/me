@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Caveat, Inter } from "next/font/google";
 import "./globals.css";
+import SwRegister from "./components/sw-register";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -22,6 +23,16 @@ export const metadata: Metadata = {
   title: "ASSOH APONG MARLEY WALTER | Fullstack Developer",
   description:
     "Portfolio of ASSOH APONG MARLEY WALTER — Fullstack JavaScript/TypeScript Developer with 4+ years of experience.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "AM Portfolio",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f5a623",
 };
 
 export default function RootLayout({
@@ -35,6 +46,7 @@ export default function RootLayout({
         className={`${bebasNeue.variable} ${caveat.variable} ${inter.variable} antialiased`}
       >
         <div id="main-content">{children}</div>
+        <SwRegister />
       </body>
     </html>
   );

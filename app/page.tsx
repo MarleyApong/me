@@ -18,6 +18,7 @@ import Projects from "./components/projects";
 import Quote from "./components/quote";
 import Contact from "./components/contact";
 import Footer from "./components/footer";
+import { ToastProvider } from "./components/ui/toast";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -26,6 +27,7 @@ export default function Home() {
     <QueryProvider>
       <ThemeProvider>
         <I18nProvider>
+        <ToastProvider position="top-right">
           {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
           <CustomCursor />
           <SmoothScroll>
@@ -49,6 +51,7 @@ export default function Home() {
           </SmoothScroll>
           <ThemePanel />
           <BackToTop />
+        </ToastProvider>
         </I18nProvider>
       </ThemeProvider>
     </QueryProvider>

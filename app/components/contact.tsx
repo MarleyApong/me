@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useToast } from "./ui/toast";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -45,22 +46,29 @@ const socials = [
 export default function Contact() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
+  const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("loading");
+    setLoading(true);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      setStatus(res.ok ? "success" : "error");
-      if (res.ok) setForm({ name: "", email: "", subject: "", message: "" });
+      if (res.ok) {
+        toast({ type: "success", message: t("contact.success") });
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast({ type: "error", message: t("contact.error") });
+      }
     } catch {
-      setStatus("error");
+      toast({ type: "error", message: t("contact.error") });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -175,18 +183,12 @@ export default function Contact() {
             <div className="reveal-up pt-4 flex items-center gap-4">
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={loading}
                 className="group flex items-center gap-3 rounded-full bg-accent px-8 py-3.5 font-display text-sm tracking-widest text-black transition-transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
               >
-                {status === "loading" ? t("contact.sending") : t("contact.send")}
+                {loading ? t("contact.sending") : t("contact.send")}
                 <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
-              {status === "success" && (
-                <span className="text-sm text-green-400">{t("contact.success")}</span>
-              )}
-              {status === "error" && (
-                <span className="text-sm text-red-400">{t("contact.error")}</span>
-              )}
             </div>
           </form>
 

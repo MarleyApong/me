@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Menu, X, ArrowUpRight, Languages } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   useTranslation,
   supportedLanguages,
@@ -14,18 +15,21 @@ import { useTheme } from "./theme-provider";
 export default function Navbar() {
   const { t, lang, changeLang } = useTranslation();
   const { mode } = useTheme();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const lastScrollY = useRef(0);
   const menuItemsRef = useRef<HTMLAnchorElement[]>([]);
 
+  const prefix = isHome ? "" : "/";
   const links = [
-    { label: t("nav.home"), href: "#home" },
-    { label: t("nav.about"), href: "#about" },
-    { label: t("nav.experience"), href: "#experience" },
-    { label: t("nav.projects"), href: "#projects" },
-    { label: t("nav.contact"), href: "#contact" },
+    { label: t("nav.home"), href: `${prefix}#home` },
+    { label: t("nav.about"), href: `${prefix}#about` },
+    { label: t("nav.experience"), href: `${prefix}#experience` },
+    { label: t("nav.projects"), href: `${prefix}#projects` },
+    { label: t("nav.contact"), href: `${prefix}#contact` },
   ];
 
   useEffect(() => {
@@ -70,7 +74,7 @@ export default function Navbar() {
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <a href="#home" className="relative h-10 w-32">
+          <a href={isHome ? "#home" : "/"} className="relative h-10 w-32">
             <Image
               src={mode === "light" ? "/images/logo-dark.png" : "/images/logo-light.png"}
               alt="MLYA"

@@ -15,6 +15,19 @@ import {
 } from "lucide-react";
 import { useTranslation } from "../i18n";
 
+const SITE_ORIGIN = "https://mlya.me";
+
+function parseHomepage(homepage: string | null): { href: string; internal: boolean } | null {
+  if (!homepage) return null;
+  try {
+    const url = new URL(homepage);
+    if (url.origin === SITE_ORIGIN) return { href: url.pathname, internal: true };
+    return { href: homepage, internal: false };
+  } catch {
+    return null;
+  }
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface Repo {
@@ -439,17 +452,16 @@ export default function Projects() {
                             <Github className="h-3.5 w-3.5" />
                             {t("projects.code")}
                           </a>
-                          {repo.homepage && (
-                            <a
-                              href={repo.homepage}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-black transition-all hover:bg-accent-dark"
-                            >
-                              <ExternalLink className="h-3.5 w-3.5" />
-                              {t("projects.demo")}
-                            </a>
-                          )}
+                          {(() => {
+                            const parsed = parseHomepage(repo.homepage);
+                            if (!parsed || parsed.internal) return null;
+                            return (
+                              <a href={parsed.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-black transition-all hover:bg-accent-dark">
+                                <ExternalLink className="h-3.5 w-3.5" />
+                                {t("projects.demo")}
+                              </a>
+                            );
+                          })()}
                         </div>
                       </div>
                     </div>

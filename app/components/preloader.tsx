@@ -71,7 +71,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
+      className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background"
     >
       {/* Name reveal */}
       <div ref={nameRef} className="relative">
@@ -85,7 +85,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         {/* Animated line under name */}
         <div
           ref={lineRef}
-          className="mx-auto mt-4 h-[2px] w-32 bg-accent"
+          className="mx-auto mt-4 h-0.5 w-32 bg-accent"
         />
       </div>
 
@@ -97,7 +97,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Loading bar */}
-      <div className="absolute bottom-0 left-0 h-[2px] w-full bg-card-border">
+      <div className="absolute bottom-0 left-0 h-0.5 w-full bg-card-border">
         <div
           className="h-full bg-accent transition-all duration-100 ease-out"
           style={{ width: `${count}%` }}

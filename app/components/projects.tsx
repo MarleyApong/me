@@ -184,7 +184,8 @@ export default function Projects() {
               ? LANGUAGES_COLORS[repo.language] || "#888"
               : "var(--accent)";
             const parsed = parseHomepage(repo.homepage);
-            const demoUrl = parsed && !parsed.internal ? parsed.href : null;
+            const demoUrl = parsed ? parsed.href : null;
+            const demoExternal = parsed ? !parsed.internal : false;
 
             return (
               <div
@@ -270,8 +271,7 @@ export default function Projects() {
                     {demoUrl && (
                       <a
                         href={demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        {...(demoExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                         className="flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-medium text-black transition-all hover:bg-accent-dark"
                       >
                         <ExternalLink className="h-3.5 w-3.5" />

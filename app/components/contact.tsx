@@ -115,7 +115,7 @@ export default function Contact() {
             05
           </span>
           <div className="h-[1px] w-12 bg-accent/30" />
-          <h2 className="font-display text-6xl tracking-tight md:text-8xl">
+          <h2 className="font-display section-title">
             {t("contact.title")}<span className="text-accent">.</span>
           </h2>
         </div>

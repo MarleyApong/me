@@ -60,6 +60,20 @@ export function ProjectsPage({ lang, go }: ProjectsProps) {
           );
         })}
       </div>
+
+      <div className="anim-in" style={{ "--d": "700ms", paddingTop: 16, borderTop: "1px solid var(--line-strong)", display: "flex", justifyContent: "flex-end" } as React.CSSProperties}>
+        <a
+          href="https://github.com/MarleyApong"
+          target="_blank"
+          rel="noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 700, color: "var(--ink)", fontFamily: "var(--f-mono)", transition: "all 0.3s", textDecoration: "none" }}
+          onMouseEnter={e => { e.currentTarget.style.textDecoration = "underline"; e.currentTarget.style.textUnderlineOffset = "4px"; }}
+          onMouseLeave={e => { e.currentTarget.style.textDecoration = "none"; }}
+        >
+          {lang === "fr" ? "Voir tous les projets sur GitHub" : "View all projects on GitHub"}
+          <ArrowRight />
+        </a>
+      </div>
     </div>
   );
 }

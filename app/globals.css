@@ -169,27 +169,23 @@ body::before {
 /* Nav */
 .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .rail-nav-item {
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
   padding: 10px 0;
   cursor: pointer;
   color: var(--rail-muted);
   border: 0;
-  text-align: left;
+  text-align: center;
   position: relative;
   transition: color 0.4s var(--ease-out);
 }
 .rail-nav-item:hover { color: var(--rail-ink); }
 .rail-nav-item.active { color: var(--rail-ink); }
 .rail-nav-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  opacity: 0.7;
-  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  display: none;
 }
 .rail-nav-item.active .rail-nav-icon,
 .rail-nav-item:hover .rail-nav-icon { opacity: 1; }
@@ -290,17 +286,11 @@ body::before {
   font-size: 10px;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 12px;
-}
-.kicker::before {
-  content: "";
-  width: 24px; height: 1px;
-  background: currentColor;
-  display: inline-block;
 }
 
 /* Big display headline */
@@ -985,7 +975,7 @@ body::before {
   transition: color 0.4s;
 }
 .project-role { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 4px; }
-.project-desc { font-size: clamp(12px, 0.5vw + 0.6vh, 13.5px); line-height: 1.5; color: var(--ink-2); flex: 1; transition: color 0.4s; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+.project-desc { font-size: clamp(13px, 0.7vw + 0.6vh, 15px); line-height: 1.6; color: var(--ink-2); flex: 1; transition: color 0.4s; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .project-tag { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.05em; padding: 4px 8px; border: 1px solid var(--line-strong); color: var(--muted); transition: all 0.3s; }
 .project-card-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--line); }

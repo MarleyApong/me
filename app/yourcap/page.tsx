@@ -55,8 +55,7 @@ export default function YourCapPage() {
         {/* Hero */}
         <section style={{ padding: "72px 0 56px", display: "flex", gap: 80, alignItems: "center" }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 600, display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-              <span style={{ width: 24, height: 1, background: "var(--muted)", display: "inline-block" }} />
+            <div style={{ fontSize: 15, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--ink)", fontWeight: 700, marginBottom: 24 }}>
               DISPONIBLE SUR ANDROID
             </div>
             <h1 style={{ fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1, margin: "0 0 20px", color: "var(--ink)" }}>
@@ -103,8 +102,7 @@ export default function YourCapPage() {
 
         {/* Screenshots */}
         <section style={{ padding: "48px 0" }}>
-          <div style={{ fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 600, display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ width: 24, height: 1, background: "var(--muted)", display: "inline-block" }} />
+          <div style={{ fontSize: 15, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--ink)", fontWeight: 700, marginBottom: 28 }}>
             APERÇU
           </div>
           <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
@@ -129,8 +127,7 @@ export default function YourCapPage() {
 
         {/* Features */}
         <section style={{ padding: "48px 0" }}>
-          <div style={{ fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 600, display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ width: 24, height: 1, background: "var(--muted)", display: "inline-block" }} />
+          <div style={{ fontSize: 15, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--ink)", fontWeight: 700, marginBottom: 28 }}>
             FONCTIONNALITÉS
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "var(--line-strong)" }}>
@@ -150,8 +147,7 @@ export default function YourCapPage() {
 
         {/* Stack */}
         <section style={{ padding: "48px 0 80px" }}>
-          <div style={{ fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 600, display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ width: 24, height: 1, background: "var(--muted)", display: "inline-block" }} />
+          <div style={{ fontSize: 15, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--ink)", fontWeight: 700, marginBottom: 28 }}>
             STACK TECHNIQUE
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>

@@ -7,6 +7,7 @@ import { Cursor } from "./components/cursor";
 import { Rail } from "./components/rail";
 import { TopBar } from "./components/top-bar";
 import { BottomNav } from "./components/bottom-nav";
+import { MobileMenu } from "./components/mobile-menu";
 import { usePageNav, TOTAL_PAGES } from "./hooks/use-page-nav";
 import { HeroPage } from "./components/pages/hero";
 import { AboutPage } from "./components/pages/about";
@@ -31,6 +32,7 @@ function PortfolioApp() {
     return "fr";
   });
   const [egg, setEgg] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navClickRef = useRef(0);
 
   const { page, go, next, prev, isDetail } = usePageNav(stageRef);
@@ -70,12 +72,13 @@ function PortfolioApp() {
     <>
       <BootScreen />
       <Cursor />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} page={page} go={go} lang={lang} />
 
       <div className="app">
         <Rail page={page} go={go} lang={lang} theme={theme} onBrandClick={onBrandClick} />
 
         <main className="stage" ref={stageRef}>
-          <TopBar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} />
+          <TopBar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} onOpenMenu={() => setMenuOpen(true)} />
 
           <div className="stage-track" style={trackStyle}>
             {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
@@ -119,13 +122,13 @@ function PortfolioApp() {
 function PageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; go: (i: number) => void; active: boolean }) {
   switch (idx) {
     case 0: return <HeroPage lang={lang} />;
-    case 1: return <AboutPage lang={lang} />;
-    case 2: return <StackPage lang={lang} />;
-    case 3: return <ProjectsPage lang={lang} go={go} />;
-    case 4: return <ExpPage lang={lang} />;
+    case 1: return <AboutPage lang={lang} active={active} />;
+    case 2: return <StackPage lang={lang} active={active} />;
+    case 3: return <ProjectsPage lang={lang} go={go} active={active} />;
+    case 4: return <ExpPage lang={lang} active={active} />;
     case 5: return <DualPage lang={lang} active={active} />;
     case 6: return <QuotePage lang={lang} />;
-    case 7: return <ContactPage lang={lang} />;
+    case 7: return <ContactPage lang={lang} active={active} />;
     case 8: return <YourCapCasePage lang={lang} go={go} />;
     case 9: return <WebCasePage lang={lang} go={go} />;
     default: return null;

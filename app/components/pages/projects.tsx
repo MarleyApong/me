@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import type { Lang } from "@/app/lib/content";
 import { CONTENT } from "@/app/lib/content";
+import { useMobileReveal } from "@/app/hooks/use-mobile-reveal";
 
-interface ProjectsProps { lang: Lang; go: (idx: number) => void }
+interface ProjectsProps { lang: Lang; go: (idx: number) => void; active?: boolean }
 
 const ArrowRight = () => (
   <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -12,13 +13,14 @@ const ArrowRight = () => (
   </svg>
 );
 
-export function ProjectsPage({ lang, go }: ProjectsProps) {
+export function ProjectsPage({ lang, go, active = true }: ProjectsProps) {
   const t = CONTENT.projects[lang];
   const router = useRouter();
+  const containerRef = useMobileReveal<HTMLDivElement>(active);
 
   return (
-    <div className="projects-page">
-      <div className="stack-head anim-in" style={{ "--d": "100ms" } as React.CSSProperties}>
+    <div className="projects-page" ref={containerRef}>
+      <div className="stack-head reveal anim-in" style={{ "--d": "100ms" } as React.CSSProperties}>
         <div className="stack-head-text">
           <div className="kicker">{t.kicker}</div>
           <h2 className="headline headline-md" style={{ marginTop: 10 }}>{t.headline}</h2>
@@ -36,7 +38,7 @@ export function ProjectsPage({ lang, go }: ProjectsProps) {
           return (
             <div
               key={i}
-              className="project-card anim-in"
+              className="project-card reveal anim-in"
               style={{ "--d": `${300 + i * 130}ms` } as React.CSSProperties}
               onClick={onClick}
             >
@@ -61,7 +63,7 @@ export function ProjectsPage({ lang, go }: ProjectsProps) {
         })}
       </div>
 
-      <div className="anim-in" style={{ "--d": "700ms", paddingTop: 16, borderTop: "1px solid var(--line-strong)", display: "flex", justifyContent: "flex-end" } as React.CSSProperties}>
+      <div className="reveal anim-in" style={{ "--d": "700ms", paddingTop: 16, borderTop: "1px solid var(--line-strong)", display: "flex", justifyContent: "flex-end" } as React.CSSProperties}>
         <a
           href="https://github.com/MarleyApong"
           target="_blank"

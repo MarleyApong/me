@@ -8,6 +8,7 @@ interface TopBarProps {
   setLang: (l: Lang) => void;
   theme: string;
   toggleTheme: () => void;
+  onOpenMenu: () => void;
 }
 
 function Flag({ cc, w = 20 }: { cc: string; w?: number }) {
@@ -21,7 +22,7 @@ function Flag({ cc, w = 20 }: { cc: string; w?: number }) {
   );
 }
 
-export function TopBar({ lang, setLang, theme, toggleTheme }: TopBarProps) {
+export function TopBar({ lang, setLang, theme, toggleTheme, onOpenMenu }: TopBarProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -35,6 +36,19 @@ export function TopBar({ lang, setLang, theme, toggleTheme }: TopBarProps) {
 
   return (
     <div className="topbar">
+      {/* Hamburger — mobile only */}
+      <button
+        className="hamburger-btn"
+        onClick={onOpenMenu}
+        aria-label="Menu"
+      >
+        <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+
       <div className={`lang-dd${open ? " open" : ""}`}>
         <button className="lang-dd-trigger" onClick={() => setOpen((o) => !o)} aria-label="Language">
           <span className="lang-dd-flag"><Flag cc={lang === "fr" ? "CM" : "GB"} /></span>

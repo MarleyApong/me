@@ -24,16 +24,11 @@ const ArrowRight = () => (
 export function BottomNav({ page, go, next, prev, isDetail }: BottomNavProps) {
   return (
     <div className="botnav">
-      <div className="dots">
-        {Array.from({ length: MAIN_PAGES }).map((_, i) => (
-          <button
-            key={i}
-            className={`dot${i === page || (isDetail && i === 3) ? " active" : ""}`}
-            onClick={() => go(i)}
-            aria-label={`Page ${i + 1}`}
-          />
-        ))}
-      </div>
+      {/* Page counter */}
+      <span style={{ fontFamily: "var(--f-mono)", fontSize: 10, letterSpacing: "0.2em", color: "var(--muted)" }}>
+        {String((isDetail ? 3 : page) + 1).padStart(2, "0")} / {String(MAIN_PAGES).padStart(2, "0")}
+      </span>
+
       <div className="botnav-arrows">
         <button className="arrow-btn" onClick={prev} disabled={page === 0 && !isDetail} aria-label="Previous">
           <ArrowLeft />

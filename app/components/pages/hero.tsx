@@ -44,7 +44,7 @@ export function HeroPage({ lang }: HeroProps) {
           <Image src="/images/logo-dark.png" alt="MLYA" width={240} height={60} priority />
         </div>
 
-        <p className="hero-tagline anim-in" style={{ "--d": "300ms" } as React.CSSProperties}>{t.tagline}</p>
+        <h2 className="headline headline-md anim-in" style={{ "--d": "300ms" } as React.CSSProperties}>{t.tagline}</h2>
 
         <p className="lede anim-in" style={{ "--d": "500ms" } as React.CSSProperties}>{t.lede}</p>
 

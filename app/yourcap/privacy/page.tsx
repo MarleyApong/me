@@ -51,8 +51,8 @@ export default function YourCapPrivacyPage() {
         <div className="space-y-10">
           {sections.map((s) => (
             <div key={s.title} className="border-t border-card-border pt-8">
-              <h2 className="font-display text-xs tracking-[0.2em] text-accent mb-3">
-                {s.title.toUpperCase()}
+              <h2 className="text-lg font-bold text-foreground mb-3">
+                {s.title}
               </h2>
               {s.body ? (
                 <p className="text-muted leading-relaxed">{s.body}</p>

@@ -195,8 +195,8 @@ export const CONTENT = {
           year: "2025",
           desc: "Application mobile de suivi des dettes. Enregistrez qui vous doit, à qui vous devez, avec sécurité PIN et tableau de bord clair.",
           tags: ["React Native", "Expo", "TypeScript", "SQLite"],
-          action: "Play Store",
-          link: "https://play.google.com/store/apps/details?id=com.marleyapong.yourcap",
+          action: "Voir l'app",
+          link: "/yourcap",
         },
         {
           num: "02 / 03",
@@ -237,8 +237,8 @@ export const CONTENT = {
           year: "2025",
           desc: "Mobile debt-tracking app. Record who owes you and who you owe, with PIN security and a clean dashboard.",
           tags: ["React Native", "Expo", "TypeScript", "SQLite"],
-          action: "Play Store",
-          link: "https://play.google.com/store/apps/details?id=com.marleyapong.yourcap",
+          action: "View app",
+          link: "/yourcap",
         },
         {
           num: "02 / 03",

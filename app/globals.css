@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* ── Tailwind font mapping ─────────────────────────────────── */
+@theme inline {
+  --font-display: var(--font-poppins);
+  --font-sans:    var(--font-poppins);
+  --font-mono:    ui-monospace, "SF Mono", monospace;
+}
+
 /* ============================================================
    MLYA Portfolio · Sober & Corporate
    ============================================================ */
@@ -39,6 +46,13 @@
 
   /* Noise */
   --noise-opacity: 0.04;
+
+  /* Compat aliases for /yourcap page */
+  --foreground:    var(--ink);
+  --foreground-dim:var(--muted);
+  --background:    var(--bg);
+  --card-bg:       var(--surface);
+  --card-border:   var(--line-strong);
 }
 
 .theme-dark {
@@ -68,7 +82,6 @@ html, body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
 }
 img { max-width: 100%; display: block; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
@@ -96,9 +109,8 @@ body::before {
 .app {
   display: grid;
   grid-template-columns: var(--rail-w) 1fr;
-  height: 100vh;
-  width: 100vw;
-  position: relative;
+  position: fixed;
+  inset: 0;
   overflow: hidden;
 }
 

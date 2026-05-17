@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import type { Lang } from "@/app/lib/content";
 import { CONTENT } from "@/app/lib/content";
 
@@ -13,6 +14,7 @@ const ArrowRight = () => (
 
 export function ProjectsPage({ lang, go }: ProjectsProps) {
   const t = CONTENT.projects[lang];
+  const router = useRouter();
 
   return (
     <div className="projects-page">
@@ -27,8 +29,9 @@ export function ProjectsPage({ lang, go }: ProjectsProps) {
       <div className="projects-grid">
         {t.items.map((p, i) => {
           const onClick = () => {
-            if (p.link) { window.open(p.link, "_blank", "noreferrer"); }
-            else if (p.actionIdx != null) { go(p.actionIdx); }
+            if (p.link) {
+              p.link.startsWith("/") ? router.push(p.link) : window.open(p.link, "_blank", "noreferrer");
+            } else if (p.actionIdx != null) { go(p.actionIdx); }
           };
           return (
             <div

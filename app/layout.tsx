@@ -1,22 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Bebas_Neue, Caveat, Inter } from "next/font/google";
+import { Anton, Poppins } from "next/font/google";
 import "./globals.css";
 import SwRegister from "./components/sw-register";
 
-const bebasNeue = Bebas_Neue({
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const anton = Anton({
   weight: "400",
-  variable: "--font-bebas",
+  variable: "--font-anton",
   subsets: ["latin"],
-});
-
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const siteUrl = "https://mlya.me";
@@ -64,10 +62,7 @@ export const metadata: Metadata = {
     description,
     images: ["/images/og-image.png"],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -76,19 +71,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5a623",
+  themeColor: "#0d0d0d",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr">
-      <body
-        className={`${bebasNeue.variable} ${caveat.variable} ${inter.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} ${anton.variable} antialiased`}>
         <div id="main-content">{children}</div>
         <SwRegister />
       </body>

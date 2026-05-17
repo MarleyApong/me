@@ -18,9 +18,9 @@
     "url": "https://github.com/MarleyApong/me"
   },
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3006",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start -p 3006",
     "lint": "eslint",
     "release:dev": "standard-version --prerelease dev",
     "release:prod": "standard-version"

@@ -78,8 +78,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
-      <body className={`${poppins.variable} ${anton.variable} antialiased`}>
+    <html lang="fr" className={`${poppins.variable} ${anton.variable}`}>
+      <body className="antialiased">
         <div id="main-content">{children}</div>
         <SwRegister />
       </body>

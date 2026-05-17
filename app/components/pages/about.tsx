@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Briefcase, MapPin, Target, Sparkles } from "lucide-react";
+import { Briefcase, MapPin, Target, Brain } from "lucide-react";
 import type { Lang } from "@/app/lib/content";
 import { CONTENT } from "@/app/lib/content";
 
@@ -11,7 +11,7 @@ const ICONS: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase size={20} />,
   MapPin:    <MapPin size={20} />,
   Target:    <Target size={20} />,
-  Sparkles:  <Sparkles size={20} />,
+  Sparkles:  <Brain size={20} />,
 };
 
 export function AboutPage({ lang }: AboutProps) {

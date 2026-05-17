@@ -40,7 +40,7 @@ export function Rail({ page, go, lang, onBrandClick }: RailProps) {
     <aside className="rail">
       <div className="rail-brand" onClick={onBrandClick}>
         <div className="rail-brand-avatar">
-          <Image src="/images/favicon.png" alt="MLYA" width={52} height={52} />
+          <Image src="/icons/icon-192.png" alt="MLYA" width={52} height={52} />
         </div>
         <div className="rail-brand-text">
           <span className="rail-brand-name">MLYA</span>

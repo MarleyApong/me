@@ -694,7 +694,6 @@ body::before {
 
 .hero-logo-mark { display: block; width: clamp(160px, 22vw, 240px); }
 .hero-logo-mark img { width: 100%; height: auto; display: block; }
-.theme-dark .hero-logo-mark img { filter: invert(1); }
 
 .hero-text {
   display: flex;

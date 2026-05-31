@@ -17,6 +17,7 @@ import { AboutIntroMobile, AboutMetaMobile } from "./components/pages/about-mobi
 import { StackPage } from "./components/pages/stack";
 import { StackMobilePage } from "./components/pages/stack-mobile";
 import { ProjectsPage } from "./components/pages/projects";
+import { ProjectMobilePage } from "./components/pages/project-mobile";
 import { ExpPage } from "./components/pages/exp";
 import { DualPage } from "./components/pages/dual";
 import { QuotePage } from "./components/pages/quote";
@@ -26,22 +27,21 @@ import { WebCasePage } from "./components/pages/web-case";
 import type { Lang } from "./lib/content";
 import { CONTENT } from "./lib/content";
 
-// Pages mobiles : About (intro + 4 items) + Stack (4 colonnes) = +8 pages
-// 0:Hero 1:AboutIntro 2-5:AboutMeta 6-9:StackMobile 10:Projects 11:Exp 12:Dual 13:Quote 14:Contact
-const MOBILE_TOTAL = 15;
-const MOBILE_MAIN  = 15;
+// Pages mobiles : About (intro+4) + Stack (4) + Projects (3) = +11 pages vs desktop
+// 0:Hero 1:AboutIntro 2-5:AboutMeta 6-9:StackMobile 10-12:Projects 13:Exp 14:Dual 15:Quote 16:Contact
+const MOBILE_TOTAL = 17;
+const MOBILE_MAIN  = 17;
 
-// Mapping page mobile → index nav rail (pour highlight hamburger)
 const MOBILE_NAV_IDX: Record<number, number> = {
   0: 0,
   1: 1, 2: 1, 3: 1, 4: 1, 5: 1,
   6: 2, 7: 2, 8: 2, 9: 2,
-  10: 3, 11: 4, 12: 5, 13: 6, 14: 7,
+  10: 3, 11: 3, 12: 3,
+  13: 4, 14: 5, 15: 6, 16: 7,
 };
 
-// Mapping nav rail → première page mobile correspondante
 const NAV_TO_MOBILE_PAGE: Record<number, number> = {
-  0: 0, 1: 1, 2: 6, 3: 10, 4: 11, 5: 12, 6: 13, 7: 14,
+  0: 0, 1: 1, 2: 6, 3: 10, 4: 13, 5: 14, 6: 15, 7: 16,
 };
 
 function PortfolioApp() {
@@ -180,11 +180,12 @@ function MobilePageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; 
       return <AboutMetaMobile lang={lang} idx={idx - 2} total={ABOUT_META_COUNT} />;
     case idx >= 6 && idx <= 9:
       return <StackMobilePage lang={lang} idx={idx - 6} />;
-    case idx === 10: return <ProjectsPage lang={lang} go={go} active={active} />;
-    case idx === 11: return <ExpPage lang={lang} active={active} />;
-    case idx === 12: return <DualPage lang={lang} active={active} />;
-    case idx === 13: return <QuotePage lang={lang} />;
-    case idx === 14: return <ContactPage lang={lang} active={active} />;
+    case idx >= 10 && idx <= 12:
+      return <ProjectMobilePage lang={lang} idx={idx - 10} go={go} />;
+    case idx === 13: return <ExpPage lang={lang} active={active} />;
+    case idx === 14: return <DualPage lang={lang} active={active} />;
+    case idx === 15: return <QuotePage lang={lang} />;
+    case idx === 16: return <ContactPage lang={lang} active={active} />;
     default: return null;
   }
 }

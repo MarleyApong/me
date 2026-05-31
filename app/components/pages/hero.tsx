@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { Lang } from "@/app/lib/content";
 import { CONTENT } from "@/app/lib/content";
+import { useTheme } from "@/app/components/theme-provider";
 
 interface HeroProps { lang: Lang }
 
@@ -26,6 +27,7 @@ const ArrowRight = () => (
 
 export function HeroPage({ lang }: HeroProps) {
   const t = CONTENT.hero[lang];
+  const { theme } = useTheme();
 
   const goTo = (idx: number) => {
     window.dispatchEvent(new CustomEvent("mlya:go", { detail: idx }));
@@ -41,7 +43,13 @@ export function HeroPage({ lang }: HeroProps) {
 
       <div className="hero-text">
         <div className="hero-logo-mark anim-scale" style={{ "--d": "150ms" } as React.CSSProperties}>
-          <Image src="/images/logo-dark.png" alt="MLYA" width={240} height={60} priority />
+          <Image
+            src={theme === "dark" ? "/images/logo-light.png" : "/images/logo-dark.png"}
+            alt="MLYA"
+            width={240}
+            height={60}
+            priority
+          />
         </div>
 
         <h2 className="headline headline-md anim-in" style={{ "--d": "300ms" } as React.CSSProperties}>{t.tagline}</h2>

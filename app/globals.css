@@ -1186,7 +1186,7 @@ body::before {
   .app { grid-template-columns: 1fr; }
   .rail { display: none; }
   .topbar { display: none; } /* remplacé par mobile-header */
-  .page { width: 100vw; padding: 84px 20px 40px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+  .page { width: 100vw; height: 100vh; padding: 84px 20px 40px; overflow: hidden; box-sizing: border-box; }
   .page::-webkit-scrollbar { display: none; }
   .stage { min-width: 0; width: 100%; }
 
@@ -1210,13 +1210,10 @@ body::before {
   .about-left { display: none; }
   .about-right { gap: 0; display: block; }
 
-  /* Zone 1 — remplit exactement le viewport dispo → items meta commencent sous le fold */
   .about-mobile-intro {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    min-height: calc(100vh - 84px);
-    padding-bottom: 8px;
+    gap: 16px;
   }
 
   /* Zone 2 — meta cards sous le fold, une par une au scroll */
@@ -1301,6 +1298,8 @@ body::before {
   .botnav { display: none; }
   .scroll-hint { display: none; }
 }
+
+
 
 /* ── Scroll reveal mechanism (mobile only) ─────────────── */
 @media (max-width: 760px) {

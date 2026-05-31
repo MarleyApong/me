@@ -5,12 +5,6 @@ import { CONTENT } from "@/app/lib/content";
 
 interface StackMobileProps { lang: Lang; idx: number }
 
-const ArrowRight = () => (
-  <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12" /><polyline points="13 6 19 12 13 18" />
-  </svg>
-);
-
 export function StackMobilePage({ lang, idx }: StackMobileProps) {
   const t = CONTENT.stack[lang];
   const col = t.cols[idx];
@@ -18,18 +12,18 @@ export function StackMobilePage({ lang, idx }: StackMobileProps) {
   if (!col) return null;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "center", gap: 28 }}>
 
-      {/* Header sur la première colonne seulement */}
-      {idx === 0 && (
-        <div style={{ marginBottom: 16 }}>
-          <div className="kicker anim-in" style={{ "--d": "50ms" } as React.CSSProperties}>{t.kicker}</div>
-          <h2 className="headline headline-md anim-in" style={{ "--d": "150ms", marginTop: 8 } as React.CSSProperties}>{t.headline}</h2>
-        </div>
-      )}
+      {/* Section label + counter */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="kicker">{t.kicker}</div>
+        <span style={{ fontFamily: "var(--f-mono)", fontSize: 10, letterSpacing: "0.2em", color: "var(--muted)" }}>
+          {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+      </div>
 
-      {/* Contenu colonne */}
-      <div className="anim-in" style={{ "--d": "200ms", flex: 1, borderTop: "1px solid var(--line-strong)", paddingTop: 20 } as React.CSSProperties}>
+      {/* Colonne */}
+      <div className="anim-in" style={{ "--d": "150ms", borderTop: "1px solid var(--line-strong)", paddingTop: 24 } as React.CSSProperties}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 20 }}>
           <span style={{ fontFamily: "var(--f-sans)", fontWeight: 700, fontSize: 40, letterSpacing: "-0.02em", lineHeight: 1, color: "var(--ink)" }}>
             {col.num}
@@ -47,18 +41,6 @@ export function StackMobilePage({ lang, idx }: StackMobileProps) {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Indicateur bas */}
-      <div className="mobile-page-indicator anim-in" style={{ "--d": "500ms" } as React.CSSProperties}>
-        <span className="mobile-page-indicator-label">
-          {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        {idx < total - 1 && (
-          <span className="mobile-page-indicator-arrow">
-            swipe <ArrowRight />
-          </span>
-        )}
       </div>
     </div>
   );

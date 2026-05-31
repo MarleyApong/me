@@ -433,9 +433,11 @@ export const CONTENT = {
       eduTitle: "Formation.",
       langTitle: "Langues.",
       edus: [
+        { y: "En cours",    h: "Master 2 · Data Science",     b: "Approfondissement en analyse de données et intelligence artificielle." },
+        { y: "2024",        h: "Master 1 · Data Science — Analyse de données", b: "Traitement et analyse de données, statistiques, Python, visualisation." },
         { y: "2020 → 2022", h: "Bachelor · Génie Logiciel",  b: "Conception logicielle, architecture, méthodes agiles." },
         { y: "2018 → 2020", h: "BTS · Génie Logiciel",       b: "Bases solides : algorithmique, bases de données, web." },
-        { y: "Continu",     h: "Autodidacte",                 b: "Plusieurs années d'expérience réelle, learning by doing." },
+        { y: "Continu",     h: "Autodidacte",                b: "Plusieurs années d'expérience réelle, learning by doing." },
       ],
       langs: [
         { cc: "CM", name: "Français", level: "Natif · à l'écrit et à l'oral", pct: 75 },
@@ -447,9 +449,11 @@ export const CONTENT = {
       eduTitle: "Education.",
       langTitle: "Languages.",
       edus: [
+        { y: "In progress", h: "Master 2 · Data Science",           b: "Advanced data analysis and artificial intelligence." },
+        { y: "2024",        h: "Master 1 · Data Science — Data Analysis", b: "Data processing, statistics, Python, visualization." },
         { y: "2020 → 2022", h: "Bachelor's · Software Engineering", b: "Software design, architecture, agile methods." },
         { y: "2018 → 2020", h: "BTS · Software Engineering",        b: "Solid foundations: algorithms, databases, web." },
-        { y: "Ongoing",     h: "Self-taught",                        b: "Years of real project experience, learning by doing." },
+        { y: "Ongoing",     h: "Self-taught",                       b: "Years of real project experience, learning by doing." },
       ],
       langs: [
         { cc: "CM", name: "French",  level: "Native · written & spoken", pct: 75 },

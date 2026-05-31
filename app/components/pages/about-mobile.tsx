@@ -46,9 +46,13 @@ export function AboutMetaMobile({ lang, idx, total }: AboutMetaMobileProps) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "center", gap: 32 }}>
-      <span style={{ fontFamily: "var(--f-mono)", fontSize: 10, letterSpacing: "0.3em", color: "var(--muted)", textTransform: "uppercase" }}>
-        {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </span>
+      {/* Section label */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="kicker">{CONTENT.about[lang].kicker}</div>
+        <span style={{ fontFamily: "var(--f-mono)", fontSize: 10, letterSpacing: "0.2em", color: "var(--muted)" }}>
+          {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+      </div>
 
       <div className="anim-scale" style={{ "--d": "100ms", color: "var(--ink)" } as React.CSSProperties}>
         {ICONS[item.icon]}

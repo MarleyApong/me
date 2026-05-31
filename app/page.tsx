@@ -8,10 +8,14 @@ import { Rail } from "./components/rail";
 import { TopBar } from "./components/top-bar";
 import { BottomNav } from "./components/bottom-nav";
 import { MobileMenu } from "./components/mobile-menu";
-import { usePageNav, TOTAL_PAGES } from "./hooks/use-page-nav";
+import { MobileHeader } from "./components/mobile-header";
+import { usePageNav, TOTAL_PAGES, MAIN_PAGES } from "./hooks/use-page-nav";
+import { useIsMobile } from "./hooks/use-is-mobile";
 import { HeroPage } from "./components/pages/hero";
 import { AboutPage } from "./components/pages/about";
+import { AboutIntroMobile, AboutMetaMobile } from "./components/pages/about-mobile";
 import { StackPage } from "./components/pages/stack";
+import { StackMobilePage } from "./components/pages/stack-mobile";
 import { ProjectsPage } from "./components/pages/projects";
 import { ExpPage } from "./components/pages/exp";
 import { DualPage } from "./components/pages/dual";
@@ -22,8 +26,27 @@ import { WebCasePage } from "./components/pages/web-case";
 import type { Lang } from "./lib/content";
 import { CONTENT } from "./lib/content";
 
+// Pages mobiles : About (intro + 4 items) + Stack (4 colonnes) = +8 pages
+// 0:Hero 1:AboutIntro 2-5:AboutMeta 6-9:StackMobile 10:Projects 11:Exp 12:Dual 13:Quote 14:Contact
+const MOBILE_TOTAL = 15;
+const MOBILE_MAIN  = 15;
+
+// Mapping page mobile → index nav rail (pour highlight hamburger)
+const MOBILE_NAV_IDX: Record<number, number> = {
+  0: 0,
+  1: 1, 2: 1, 3: 1, 4: 1, 5: 1,
+  6: 2, 7: 2, 8: 2, 9: 2,
+  10: 3, 11: 4, 12: 5, 13: 6, 14: 7,
+};
+
+// Mapping nav rail → première page mobile correspondante
+const NAV_TO_MOBILE_PAGE: Record<number, number> = {
+  0: 0, 1: 1, 2: 6, 3: 10, 4: 11, 5: 12, 6: 13, 7: 14,
+};
+
 function PortfolioApp() {
   const { theme, toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
   const stageRef = useRef<HTMLElement>(null);
   const [lang, setLang] = useState<Lang>(() => {
     if (typeof window !== "undefined") {
@@ -35,82 +58,90 @@ function PortfolioApp() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navClickRef = useRef(0);
 
-  const { page, go, next, prev, isDetail } = usePageNav(stageRef);
+  const total = isMobile ? MOBILE_TOTAL : TOTAL_PAGES;
+  const { page, go, next, prev, isDetail } = usePageNav(stageRef, total, isMobile ? MOBILE_MAIN : MAIN_PAGES);
 
   useEffect(() => { localStorage.setItem("mlya.lang", lang); }, [lang]);
 
+  // Navigation depuis le menu mobile → page mobile correcte
+  const goMobile = useCallback((navIdx: number) => {
+    if (isMobile) {
+      go(NAV_TO_MOBILE_PAGE[navIdx] ?? 0);
+    } else {
+      go(navIdx);
+    }
+  }, [isMobile, go]);
+
   const onBrandClick = useCallback(() => {
     navClickRef.current += 1;
-    if (navClickRef.current >= 5) {
-      navClickRef.current = 0;
-      setEgg(true);
-    }
+    if (navClickRef.current >= 5) { navClickRef.current = 0; setEgg(true); }
   }, []);
 
-  // Konami code easter egg
   useEffect(() => {
     const seq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
     let idx = 0;
     const h = (e: KeyboardEvent) => {
       if (e.key === "Escape") { setEgg(false); return; }
       if (e.key.toLowerCase() === seq[idx].toLowerCase()) {
-        idx++;
-        if (idx === seq.length) { setEgg(true); idx = 0; }
+        idx++; if (idx === seq.length) { setEgg(true); idx = 0; }
       } else { idx = 0; }
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
   }, []);
 
-  const trackStyle = {
-    transform: `translateX(calc(${-page} * (100vw - var(--rail-w))))`,
-  };
+  const trackStyle = { transform: `translateX(calc(${-page} * (100vw - var(--rail-w))))` };
 
-  const labels = ["01 Home","02 About","03 Stack","04 Projects","05 Path","06 Studies","07 Quote","08 Contact","Detail YourCap","Detail Web"];
+  // Page active pour le rail nav
+  const activeNavIdx = isMobile ? (MOBILE_NAV_IDX[page] ?? 0) : page;
 
   return (
     <>
       <BootScreen />
       <Cursor />
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} page={page} go={go} lang={lang} />
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        page={activeNavIdx}
+        go={goMobile}
+        lang={lang}
+      />
+      <MobileHeader lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} onOpenMenu={() => setMenuOpen(true)} />
 
       <div className="app">
-        <Rail page={page} go={go} lang={lang} theme={theme} onBrandClick={onBrandClick} />
+        <Rail page={isMobile ? activeNavIdx : page} go={isMobile ? goMobile : go} lang={lang} theme={theme} onBrandClick={onBrandClick} />
 
         <main className="stage" ref={stageRef}>
           <TopBar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} onOpenMenu={() => setMenuOpen(true)} />
 
           <div className="stage-track" style={trackStyle}>
-            {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
-              <section
-                key={i}
-                className="page"
-                data-active={String(i === page)}
-                data-screen-label={labels[i]}
-              >
-                <PageRouter idx={i} lang={lang} go={go} active={i === page} />
+            {Array.from({ length: total }).map((_, i) => (
+              <section key={i} className="page" data-active={String(i === page)}>
+                {isMobile
+                  ? <MobilePageRouter idx={i} lang={lang} go={go} active={i === page} />
+                  : <DesktopPageRouter idx={i} lang={lang} go={go} active={i === page} />
+                }
               </section>
             ))}
           </div>
 
-          {page === 0 && (
+          {page === 0 && !isMobile && (
             <div className="scroll-hint">
               {CONTENT.ui[lang].hint}
               <span className="scroll-hint-line" />
             </div>
           )}
 
-          <BottomNav page={page} go={go} next={next} prev={prev} isDetail={isDetail} />
+          {!isMobile && <BottomNav page={page} go={go} next={next} prev={prev} isDetail={isDetail} />}
         </main>
       </div>
 
       <div className={`egg-overlay${egg ? " show" : ""}`}>
         <div className="egg-content">
           <h2>Hello, dev.</h2>
-          <p>
-            {lang === "fr"
-              ? "Tu as trouvé un easter egg 🎉 Je suis Apong Marley, et si tu lis ceci, on a probablement quelque chose à construire ensemble."
-              : "You found an easter egg 🎉 I'm Apong Marley, and if you're reading this, we probably have something to build together."}
+          <p>{lang === "fr"
+            ? "Tu as trouvé un easter egg 🎉 Je suis Apong Marley, et si tu lis ceci, on a probablement quelque chose à construire ensemble."
+            : "You found an easter egg 🎉 I'm Apong Marley, and if you're reading this, we probably have something to build together."}
           </p>
           <button onClick={() => setEgg(false)}>{lang === "fr" ? "Fermer" : "Close"}</button>
         </div>
@@ -119,7 +150,8 @@ function PortfolioApp() {
   );
 }
 
-function PageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; go: (i: number) => void; active: boolean }) {
+// ── Desktop : 10 pages ────────────────────────────────────
+function DesktopPageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; go: (i: number) => void; active: boolean }) {
   switch (idx) {
     case 0: return <HeroPage lang={lang} />;
     case 1: return <AboutPage lang={lang} active={active} />;
@@ -131,6 +163,28 @@ function PageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; go: (i
     case 7: return <ContactPage lang={lang} active={active} />;
     case 8: return <YourCapCasePage lang={lang} go={go} />;
     case 9: return <WebCasePage lang={lang} go={go} />;
+    default: return null;
+  }
+}
+
+// ── Mobile : 15 pages ─────────────────────────────────────
+// 0:Hero | 1:AboutIntro | 2-5:AboutMeta | 6-9:StackCol | 10:Projects | 11:Exp | 12:Dual | 13:Quote | 14:Contact
+function MobilePageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; go: (i: number) => void; active: boolean }) {
+  const ABOUT_META_COUNT = CONTENT.about[lang].m.length; // 4
+  const STACK_COL_COUNT  = CONTENT.stack[lang].cols.length; // 4
+
+  switch (true) {
+    case idx === 0:  return <HeroPage lang={lang} />;
+    case idx === 1:  return <AboutIntroMobile lang={lang} />;
+    case idx >= 2 && idx <= 5:
+      return <AboutMetaMobile lang={lang} idx={idx - 2} total={ABOUT_META_COUNT} />;
+    case idx >= 6 && idx <= 9:
+      return <StackMobilePage lang={lang} idx={idx - 6} />;
+    case idx === 10: return <ProjectsPage lang={lang} go={go} active={active} />;
+    case idx === 11: return <ExpPage lang={lang} active={active} />;
+    case idx === 12: return <DualPage lang={lang} active={active} />;
+    case idx === 13: return <QuotePage lang={lang} />;
+    case idx === 14: return <ContactPage lang={lang} active={active} />;
     default: return null;
   }
 }

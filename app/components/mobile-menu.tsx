@@ -76,7 +76,6 @@ export function MobileMenu({ open, onClose, page, go, lang }: MobileMenuProps) {
                 borderBottom: "1px solid var(--rail-line)",
                 background: "none",
                 border: "none",
-                borderBottom: "1px solid var(--rail-line)",
                 color: isActive ? "var(--rail-ink)" : "var(--rail-muted)",
                 fontSize: "clamp(22px, 5vw, 32px)",
                 fontWeight: 600,

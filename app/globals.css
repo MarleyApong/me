@@ -1207,6 +1207,7 @@ body::before {
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: 0; display: block; }
   .about-left { display: none; }
+  .about-portrait { width: auto; height: auto; aspect-ratio: unset; max-height: unset; }
   .about-right { gap: 0; display: block; }
 
   .about-mobile-intro {

@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef, type RefObject } from "react";
 
-export const TOTAL_PAGES = 10;
-export const MAIN_PAGES  = 8;
+export const TOTAL_PAGES = 9;
+export const MAIN_PAGES  = 7;
 
 export function usePageNav(
   stageRef: RefObject<HTMLElement | null>,

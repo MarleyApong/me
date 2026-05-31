@@ -16,8 +16,8 @@ export interface ProjectItem {
 
 export const CONTENT = {
   nav: {
-    fr: ["Accueil", "À propos", "Stack", "Projets", "Parcours", "Formation", "Citation", "Contact"],
-    en: ["Home", "About", "Stack", "Work", "Path", "Studies", "Quote", "Contact"],
+    fr: ["Accueil", "À propos", "Stack", "Projets", "Formation", "Citation", "Contact"],
+    en: ["Home", "About", "Stack", "Work", "Studies", "Quote", "Contact"],
   },
 
   hero: {

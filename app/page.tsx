@@ -28,20 +28,20 @@ import type { Lang } from "./lib/content";
 import { CONTENT } from "./lib/content";
 
 // Pages mobiles : About (intro+4) + Stack (4) + Projects (3) = +11 pages vs desktop
-// 0:Hero 1:AboutIntro 2-5:AboutMeta 6-9:StackMobile 10-12:Projects 13:Exp 14:Dual 15:Quote 16:Contact
-const MOBILE_TOTAL = 17;
-const MOBILE_MAIN  = 17;
+// 0:Hero 1:AboutIntro 2-5:AboutMeta 6-9:StackMobile 10-12:Projects 13:Dual 14:Quote 15:Contact
+const MOBILE_TOTAL = 16;
+const MOBILE_MAIN  = 16;
 
 const MOBILE_NAV_IDX: Record<number, number> = {
   0: 0,
   1: 1, 2: 1, 3: 1, 4: 1, 5: 1,
   6: 2, 7: 2, 8: 2, 9: 2,
   10: 3, 11: 3, 12: 3,
-  13: 4, 14: 5, 15: 6, 16: 7,
+  13: 4, 14: 5, 15: 6,
 };
 
 const NAV_TO_MOBILE_PAGE: Record<number, number> = {
-  0: 0, 1: 1, 2: 6, 3: 10, 4: 13, 5: 14, 6: 15, 7: 16,
+  0: 0, 1: 1, 2: 6, 3: 10, 4: 13, 5: 14, 6: 15,
 };
 
 function PortfolioApp() {
@@ -157,12 +157,11 @@ function DesktopPageRouter({ idx, lang, go, active }: { idx: number; lang: Lang;
     case 1: return <AboutPage lang={lang} active={active} />;
     case 2: return <StackPage lang={lang} active={active} />;
     case 3: return <ProjectsPage lang={lang} go={go} active={active} />;
-    case 4: return <ExpPage lang={lang} active={active} />;
-    case 5: return <DualPage lang={lang} active={active} />;
-    case 6: return <QuotePage lang={lang} />;
-    case 7: return <ContactPage lang={lang} active={active} />;
-    case 8: return <YourCapCasePage lang={lang} go={go} />;
-    case 9: return <WebCasePage lang={lang} go={go} />;
+    case 4: return <DualPage lang={lang} active={active} />;
+    case 5: return <QuotePage lang={lang} />;
+    case 6: return <ContactPage lang={lang} active={active} />;
+    case 7: return <YourCapCasePage lang={lang} go={go} />;
+    case 8: return <WebCasePage lang={lang} go={go} />;
     default: return null;
   }
 }
@@ -182,10 +181,9 @@ function MobilePageRouter({ idx, lang, go, active }: { idx: number; lang: Lang; 
       return <StackMobilePage lang={lang} idx={idx - 6} />;
     case idx >= 10 && idx <= 12:
       return <ProjectMobilePage lang={lang} idx={idx - 10} go={go} />;
-    case idx === 13: return <ExpPage lang={lang} active={active} />;
-    case idx === 14: return <DualPage lang={lang} active={active} />;
-    case idx === 15: return <QuotePage lang={lang} />;
-    case idx === 16: return <ContactPage lang={lang} active={active} />;
+    case idx === 13: return <DualPage lang={lang} active={active} />;
+    case idx === 14: return <QuotePage lang={lang} />;
+    case idx === 15: return <ContactPage lang={lang} active={active} />;
     default: return null;
   }
 }

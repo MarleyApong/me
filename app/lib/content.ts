@@ -438,8 +438,8 @@ export const CONTENT = {
         { y: "Continu",     h: "Autodidacte",                 b: "Plusieurs années d'expérience réelle, learning by doing." },
       ],
       langs: [
-        { cc: "CM", name: "Français", level: "Natif · à l'écrit et à l'oral", pct: 100 },
-        { cc: "GB", name: "Anglais",  level: "Professionnel · communication technique", pct: 75 },
+        { cc: "CM", name: "Français", level: "Natif · à l'écrit et à l'oral", pct: 75 },
+        { cc: "GB", name: "Anglais",  level: "Bon niveau écrit · oral fonctionnel", pct: 50 },
       ],
     },
     en: {
@@ -452,8 +452,8 @@ export const CONTENT = {
         { y: "Ongoing",     h: "Self-taught",                        b: "Years of real project experience, learning by doing." },
       ],
       langs: [
-        { cc: "CM", name: "French",  level: "Native · written & spoken", pct: 100 },
-        { cc: "GB", name: "English", level: "Professional · technical fluency", pct: 75 },
+        { cc: "CM", name: "French",  level: "Native · written & spoken", pct: 75 },
+        { cc: "GB", name: "English", level: "Strong written · functional spoken", pct: 50 },
       ],
     },
   },
